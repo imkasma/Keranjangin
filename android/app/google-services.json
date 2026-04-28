@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "384008419137",
+    "project_id": "keranjangin-51f59",
+    "storage_bucket": "keranjangin-51f59.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384008419137:android:aabc0167377ad89acc53c0",
+        "android_client_info": {
+          "package_name": "com.example.grocery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATaUO-dZAiMK3lnhmQtlmKp99aefDXkl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

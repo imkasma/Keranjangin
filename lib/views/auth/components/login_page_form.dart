@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/routes/app_routes.dart';
@@ -20,15 +21,40 @@ class _LoginPageFormState extends State<LoginPageForm> {
   final _key = GlobalKey<FormState>();
 
   bool isPasswordShown = false;
-  onPassShowClicked() {
-    isPasswordShown = !isPasswordShown;
-    setState(() {});
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  void onPassShowClicked() {
+    setState(() {
+      isPasswordShown = !isPasswordShown;
+    });
   }
 
-  onLogin() {
+  void onLogin() {
     final bool isFormOkay = _key.currentState?.validate() ?? false;
+
     if (isFormOkay) {
-      Navigator.pushNamed(context, AppRoutes.entryPoint);
+      Navigator.of(context).pushReplacementNamed(AppRoutes.entryPoint);
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? user = await _googleSignIn.signIn();
+
+      if (user != null) {
+        print("Login berhasil");
+        print("Nama: ${user.displayName}");
+        print("Email: ${user.email}");
+
+        if (!mounted) return;
+
+        Navigator.of(context).pushReplacementNamed(AppRoutes.entryPoint);
+      } else {
+        print("Login dibatalkan");
+      }
+    } catch (error) {
+      print("Error login Google: $error");
     }
   }
 
@@ -60,24 +86,21 @@ class _LoginPageFormState extends State<LoginPageForm> {
               const SizedBox(height: 8),
               TextFormField(
                 validator: Validators.password.call,
-                onFieldSubmitted: (v) => onLogin(),
+                onFieldSubmitted: (_) => onLogin(),
                 textInputAction: TextInputAction.done,
                 obscureText: !isPasswordShown,
                 decoration: InputDecoration(
-                  suffixIcon: Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      onPressed: onPassShowClicked,
-                      icon: SvgPicture.asset(
-                        AppIcons.eye,
-                        width: 24,
-                      ),
+                  suffixIcon: IconButton(
+                    onPressed: onPassShowClicked,
+                    icon: SvgPicture.asset(
+                      AppIcons.eye,
+                      width: 24,
                     ),
                   ),
                 ),
               ),
 
-              // Forget Password labelLarge
+              // Forget Password
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -88,8 +111,22 @@ class _LoginPageFormState extends State<LoginPageForm> {
                 ),
               ),
 
-              // Login labelLarge
-              LoginButton(onPressed: onLogin),
+              // Login Button
+              LoginButton(
+                onPressed: onLogin,
+              ),
+
+              const SizedBox(height: 20),
+
+              // Google Login Button
+              ElevatedButton.icon(
+                onPressed: signInWithGoogle,
+                icon: const Icon(Icons.login),
+                label: const Text("Login with Google"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+              ),
             ],
           ),
         ),
