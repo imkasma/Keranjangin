@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'eGrocery',
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.defaultTheme,
       onGenerateRoute: RouteGenerator.onGenerate,
       initialRoute: AppRoutes.onboarding,

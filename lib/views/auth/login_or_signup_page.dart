@@ -54,17 +54,9 @@ class _Footer extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.appleIcon),
-              iconSize: 48,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.googleIcon),
-              iconSize: 48,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.twitterIcon),
+              icon: SvgPicture.asset(
+                'assets/icons/google.svg',
+              ), // Tulis path langsung
               iconSize: 48,
             ),
             IconButton(

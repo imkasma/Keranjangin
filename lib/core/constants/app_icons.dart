@@ -10,7 +10,7 @@ class AppIcons {
   static const dashboardIcon = 'assets/icons/dashboard_icon.svg';
   static const facebookIcon = 'assets/icons/facebook_icon.svg';
   static const googleIconRounded = 'assets/icons/google_icon_rounded.svg';
-  static const googleIcon = 'assets/icons/google.png';
+  static const googleIcon = 'assets/icons/google.svg';
   static const home = 'assets/icons/home.svg';
   static const location = 'assets/icons/location.svg';
   static const menu = 'assets/icons/menu.svg';
