@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/routes/app_routes.dart';
@@ -23,6 +25,7 @@ class _LoginPageFormState extends State<LoginPageForm> {
   bool isPasswordShown = false;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void onPassShowClicked() {
     setState(() {
@@ -40,21 +43,35 @@ class _LoginPageFormState extends State<LoginPageForm> {
 
   Future<void> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? user = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
-      if (user != null) {
-        print("Login berhasil");
-        print("Nama: ${user.displayName}");
-        print("Email: ${user.email}");
-
-        if (!mounted) return;
-
-        Navigator.of(context).pushReplacementNamed(AppRoutes.entryPoint);
-      } else {
-        print("Login dibatalkan");
+      if (googleUser == null) {
+        debugPrint("Login dibatalkan");
+        return;
       }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      final User? user = userCredential.user;
+
+      debugPrint("Login berhasil");
+      debugPrint("Nama: ${user?.displayName}");
+      debugPrint("Email: ${user?.email}");
+
+      if (!mounted) return;
+
+      Navigator.of(context).pushReplacementNamed(AppRoutes.entryPoint);
     } catch (error) {
-      print("Error login Google: $error");
+      debugPrint("Error login Google: $error");
     }
   }
 

@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/components/app_back_button.dart';
 import '../../../core/components/app_settings_tile.dart';
 import '../../../core/constants/constants.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/themes/app_themes.dart';
 
 class LanguageSettingsPage extends StatelessWidget {

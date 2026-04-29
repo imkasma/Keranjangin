@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:384008419137:android:aabc0167377ad89acc53c0",
+        "mobilesdk_app_id": "1:384008419137:android:6eacd563e66175a8cc53c0",
         "android_client_info": {
-          "package_name": "com.example.grocery"
+          "package_name": "com.keranjangin.app"
         }
       },
       "oauth_client": [],
