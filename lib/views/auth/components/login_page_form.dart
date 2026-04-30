@@ -11,9 +11,7 @@ import '../../../core/utils/validators.dart';
 import 'login_button.dart';
 
 class LoginPageForm extends StatefulWidget {
-  const LoginPageForm({
-    super.key,
-  });
+  const LoginPageForm({super.key});
 
   @override
   State<LoginPageForm> createState() => _LoginPageFormState();
@@ -58,8 +56,9 @@ class _LoginPageFormState extends State<LoginPageForm> {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      final UserCredential userCredential = await _auth.signInWithCredential(
+        credential,
+      );
 
       final User? user = userCredential.user;
 
@@ -109,10 +108,7 @@ class _LoginPageFormState extends State<LoginPageForm> {
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     onPressed: onPassShowClicked,
-                    icon: SvgPicture.asset(
-                      AppIcons.eye,
-                      width: 24,
-                    ),
+                    icon: SvgPicture.asset(AppIcons.eye, width: 24),
                   ),
                 ),
               ),
@@ -129,21 +125,9 @@ class _LoginPageFormState extends State<LoginPageForm> {
               ),
 
               // Login Button
-              LoginButton(
-                onPressed: onLogin,
-              ),
+              LoginButton(onPressed: onLogin),
 
               const SizedBox(height: 20),
-
-              // Google Login Button
-              ElevatedButton.icon(
-                onPressed: signInWithGoogle,
-                icon: const Icon(Icons.login),
-                label: const Text("Login with Google"),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-              ),
             ],
           ),
         ),
