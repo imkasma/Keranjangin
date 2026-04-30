@@ -1,3 +1,4 @@
+// views/cart/cart_page.dart
 import 'package:flutter/material.dart';
 
 import '../../core/components/app_back_button.dart';
@@ -17,6 +18,9 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // dummy jumlah item (bisa diganti nanti dengan data real/API)
+    final int itemCount = 3;
+
     return Scaffold(
       appBar: isHomePage
           ? null
@@ -26,27 +30,46 @@ class CartPage extends StatelessWidget {
             ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SingleCartItemTile(),
-              const SingleCartItemTile(),
-              const SingleCartItemTile(),
-              const CouponCodeField(),
-              const ItemTotalsAndPrice(),
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: AppDefaults.padding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// 🛒 Cart Items (lebih scalable)
+                ...List.generate(
+                  itemCount,
+                  (index) => const SingleCartItemTile(),
+                ),
+
+                const SizedBox(height: 8),
+
+                /// 🎟 Coupon
+                const CouponCodeField(),
+
+                /// 💰 Total Price
+                const ItemTotalsAndPrice(),
+
+                /// 🔘 Checkout Button
+                Padding(
                   padding: const EdgeInsets.all(AppDefaults.padding),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Navigator.pushNamed(context, AppRoutes.orderSuccessfull);
-                      Navigator.pushNamed(context, AppRoutes.checkoutPage);
-                    },
-                    child: const Text('Checkout'),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.checkoutPage,
+                        );
+                      },
+                      child: const Text('Checkout'),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
