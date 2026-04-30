@@ -1,3 +1,4 @@
+// views/cart/checkout_page.dart
 import 'package:flutter/material.dart';
 
 import '../../core/components/app_back_button.dart';
@@ -33,9 +34,7 @@ class CheckoutPage extends StatelessWidget {
 }
 
 class PayNowButton extends StatelessWidget {
-  const PayNowButton({
-    super.key,
-  });
+  const PayNowButton({super.key});
 
   @override
   Widget build(BuildContext context) {
