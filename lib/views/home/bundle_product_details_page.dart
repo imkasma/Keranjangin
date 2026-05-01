@@ -4,27 +4,10 @@ import '../../core/components/app_back_button.dart';
 import '../../core/components/buy_now_row_button.dart';
 import '../../core/components/price_and_quantity.dart';
 import '../../core/constants/constants.dart';
+import '../../core/constants/global_data.dart';
 import '../../core/routes/app_routes.dart';
 import 'components/bundle_meta_data.dart';
 import 'components/bundle_pack_details.dart';
-
-// model cart
-class CartItem {
-  final String name;
-  final double price;
-  final int quantity;
-  final List<String> images;
-
-  CartItem({
-    required this.name,
-    required this.price,
-    required this.quantity,
-    required this.images,
-  });
-}
-
-// cart global
-List<CartItem> cart = [];
 
 class BundleProductDetailsPage extends StatefulWidget {
   final String name;
@@ -44,7 +27,39 @@ class BundleProductDetailsPage extends StatefulWidget {
 }
 
 class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
-  int rating = 3; // default rating
+  int rating = 3;
+
+  /// CEK FAVORITE (KHUSUS BUNDLE = product null)
+  bool get isFavorite =>
+      wishlist.any((item) => item.name == widget.name && item.product == null);
+
+  /// TOGGLE WISHLIST
+  void toggleWishlist() {
+    setState(() {
+      if (isFavorite) {
+        wishlist.removeWhere(
+          (item) => item.name == widget.name && item.product == null,
+        );
+      } else {
+        wishlist.add(
+          WishlistItem(
+            name: widget.name,
+            price: widget.price,
+            images: widget.images,
+            product: null, // penanda bundle
+          ),
+        );
+      }
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isFavorite ? "Dihapus dari wishlist" : "Ditambahkan ke wishlist ❤️",
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,26 +72,70 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
         leading: const AppBackButton(),
         title: const Text('Bundle Details'),
       ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(imageUrl),
+            /// =====================
+            /// IMAGE + LOVE (ATAS)
+            /// =====================
+            Stack(
+              children: [
+                Image.network(imageUrl),
+
+                Positioned(
+                  top: 16,
+                  right: 16,
+                  child: GestureDetector(
+                    onTap: toggleWishlist,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.red : Colors.grey,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
 
             Padding(
               padding: const EdgeInsets.all(AppDefaults.padding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.name,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  /// =====================
+                  /// TITLE + LOVE (BAWAH)
+                  /// =====================
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.name,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+
+                      IconButton(
+                        onPressed: toggleWishlist,
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
 
                   const SizedBox(height: 8),
 
-                  /// ⭐ RATING BISA DIKLIK
+                  /// RATING
                   Row(
                     children: List.generate(5, (index) {
                       return IconButton(
@@ -84,10 +143,6 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                           setState(() {
                             rating = index + 1;
                           });
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Rating: $rating ⭐")),
-                          );
                         },
                         icon: Icon(
                           Icons.star,
@@ -108,7 +163,9 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                   const PackDetails(),
                   const Divider(thickness: 0.1),
 
+                  /// =====================
                   /// BUTTON
+                  /// =====================
                   BuyNowRow(
                     onCartButtonTap: () {
                       cart.add(

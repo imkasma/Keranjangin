@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
-import '../../home/bundle_product_details_page.dart';
+import '../../../core/constants/global_data.dart'; // 🔥 INI WAJIB
 
 class SingleCartItemTile extends StatelessWidget {
   final CartItem item;
@@ -31,7 +31,7 @@ class SingleCartItemTile extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// 🔥 Thumbnail
+              /// IMAGE
               SizedBox(
                 width: 70,
                 child: AspectRatio(
@@ -42,7 +42,7 @@ class SingleCartItemTile extends StatelessWidget {
 
               const SizedBox(width: 16),
 
-              /// 🔥 Name + Qty
+              /// NAME + QTY
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +65,6 @@ class SingleCartItemTile extends StatelessWidget {
 
                     const SizedBox(height: 8),
 
-                    /// 🔥 Qty control (belum aktif)
                     Row(
                       children: [
                         IconButton(
@@ -92,7 +91,7 @@ class SingleCartItemTile extends StatelessWidget {
                 ),
               ),
 
-              /// 🔥 Price + Delete
+              /// PRICE + DELETE
               Column(
                 children: [
                   IconButton(
@@ -104,7 +103,6 @@ class SingleCartItemTile extends StatelessWidget {
                         const SnackBar(content: Text("Item dihapus")),
                       );
 
-                      // refresh (sementara)
                       (context as Element).markNeedsBuild();
                     },
                     icon: SvgPicture.asset(AppIcons.delete),

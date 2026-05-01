@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/components/app_back_button.dart';
 import '../../core/constants/app_defaults.dart';
+import '../../core/constants/global_data.dart';
 import '../../core/routes/app_routes.dart';
-import '../home/bundle_product_details_page.dart'; // ambil cart
 import 'components/coupon_code_field.dart';
 import 'components/single_cart_item_tile.dart';
 
@@ -14,7 +14,6 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 🔥 hitung total
     double total = cart.fold(
       0,
       (sum, item) => sum + (item.price * item.quantity),
@@ -31,7 +30,7 @@ class CartPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              /// 🔥 LIST ITEM DARI CART
+              /// LIST CART
               if (cart.isEmpty)
                 const Padding(
                   padding: EdgeInsets.all(20),
@@ -45,7 +44,7 @@ class CartPage extends StatelessWidget {
 
               const CouponCodeField(),
 
-              /// 🔥 TOTAL HARGA
+              /// TOTAL
               Padding(
                 padding: const EdgeInsets.all(AppDefaults.padding),
                 child: Text(

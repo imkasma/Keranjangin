@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../views/home/components/animated_dots.dart';
 import '../constants/constants.dart';
@@ -9,9 +8,17 @@ class ProductImagesSlider extends StatefulWidget {
   const ProductImagesSlider({
     super.key,
     required this.images,
+    required this.isFavorite,
+    required this.onFavoriteTap,
   });
 
   final List<String> images;
+
+  /// ❤️ STATUS
+  final bool isFavorite;
+
+  /// ❤️ ACTION
+  final VoidCallback onFavoriteTap;
 
   @override
   State<ProductImagesSlider> createState() => _ProductImagesSliderState();
@@ -77,29 +84,29 @@ class _ProductImagesSliderState extends State<ProductImagesSlider> {
                   totalItems: images.length,
                   currentIndex: currentIndex,
                 ),
-              )
+              ),
             ],
           ),
+
+          /// ❤️ LOVE BUTTON (FIX)
           Positioned(
-            right: 0,
-            child: Material(
-              color: Colors.transparent,
-              borderRadius: AppDefaults.borderRadius,
-              child: IconButton(
-                onPressed: () {},
-                iconSize: 56,
-                constraints: const BoxConstraints(minHeight: 56, minWidth: 56),
-                icon: Container(
-                  padding: const EdgeInsets.all(AppDefaults.padding),
-                  decoration: const BoxDecoration(
-                    color: AppColors.scaffoldBackground,
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(AppIcons.heart),
+            top: 16,
+            right: 16,
+            child: GestureDetector(
+              onTap: widget.onFavoriteTap,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: widget.isFavorite ? Colors.red : Colors.black,
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

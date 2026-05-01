@@ -1,18 +1,19 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../core/constants/app_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../core/constants/app_icons.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_defaults.dart';
+
 import '../cart/cart_page.dart';
 import '../home/home_page.dart';
 import '../menu/menu_page.dart';
 import '../profile/profile_page.dart';
 import '../save/save_page.dart';
+
 import 'components/app_navigation_bar.dart';
 
-/// This page will contain all the bottom navigation tabs
 class EntryPointUI extends StatefulWidget {
   const EntryPointUI({super.key});
 
@@ -21,21 +22,20 @@ class EntryPointUI extends StatefulWidget {
 }
 
 class _EntryPointUIState extends State<EntryPointUI> {
-  /// Current Page
   int currentIndex = 0;
 
-  /// On labelLarge navigation tap
   void onBottomNavigationTap(int index) {
-    currentIndex = index;
-    setState(() {});
+    setState(() {
+      currentIndex = index;
+    });
   }
 
-  /// All the pages
-  List<Widget> pages = [
+  /// PAGES (JANGAN CONST kalau butuh refresh state)
+  final List<Widget> pages = [
     const HomePage(),
     const MenuPage(),
     const CartPage(isHomePage: true),
-    const SavePage(isHomePage: false),
+    const SavePage(isHomePage: false), // ✅ ini tab, bukan route
     const ProfilePage(),
   ];
 
@@ -43,6 +43,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageTransitionSwitcher(
+        duration: AppDefaults.duration,
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
           return SharedAxisTransition(
             animation: primaryAnimation,
@@ -52,9 +53,10 @@ class _EntryPointUIState extends State<EntryPointUI> {
             child: child,
           );
         },
-        duration: AppDefaults.duration,
         child: pages[currentIndex],
       ),
+
+      /// FAB KE CART (AMAN)
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           onBottomNavigationTap(2);
@@ -63,6 +65,8 @@ class _EntryPointUIState extends State<EntryPointUI> {
         child: SvgPicture.asset(AppIcons.cart),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+      /// NAVBAR
       bottomNavigationBar: AppBottomNavigationBar(
         currentIndex: currentIndex,
         onNavTap: onBottomNavigationTap,

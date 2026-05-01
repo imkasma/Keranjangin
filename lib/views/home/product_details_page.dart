@@ -5,8 +5,8 @@ import '../../core/components/buy_now_row_button.dart';
 import '../../core/components/price_and_quantity.dart';
 import '../../core/components/product_images_slider.dart';
 import '../../core/constants/app_defaults.dart';
+import '../../core/constants/global_data.dart';
 import '../../core/routes/app_routes.dart';
-import '../home/bundle_product_details_page.dart';
 import '../../core/models/dummy_product_model.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -20,11 +20,43 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late int rating;
+  bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     rating = widget.product.rating;
+
+    /// CEK DARI WISHLIST (PAKAI PRODUCT)
+    isFavorite = wishlist.any((item) => item.product == widget.product);
+  }
+
+  /// TOGGLE WISHLIST
+  void toggleWishlist() {
+    setState(() {
+      if (isFavorite) {
+        wishlist.removeWhere((item) => item.product == widget.product);
+      } else {
+        wishlist.add(
+          WishlistItem(
+            name: widget.product.name,
+            price: widget.product.price,
+            images: widget.product.images,
+            product: widget.product, // 🔥 penting
+          ),
+        );
+      }
+
+      isFavorite = !isFavorite;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isFavorite ? "Ditambahkan ke wishlist ❤️" : "Dihapus dari wishlist",
+        ),
+      ),
+    );
   }
 
   @override
@@ -34,13 +66,25 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         : ['https://i.imgur.com/NOuZzbe.png'];
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text('Product Details'),
+
+        /// LOVE APPBAR
+        actions: [
+          IconButton(
+            onPressed: toggleWishlist,
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.black,
+            ),
+          ),
+        ],
       ),
 
-      /// BUTTON
+      /// =======================
+      /// BOTTOM BUTTON
+      /// =======================
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
@@ -68,11 +112,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ),
       ),
 
+      /// =======================
+      /// BODY
+      /// =======================
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductImagesSlider(images: images),
+            /// LOVE DI GAMBAR (SYNC)
+            ProductImagesSlider(
+              images: images,
+              isFavorite: isFavorite,
+              onFavoriteTap: toggleWishlist,
+            ),
 
             Padding(
               padding: const EdgeInsets.all(AppDefaults.padding),
@@ -87,12 +139,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
 
                   const SizedBox(height: 8),
-
                   Text('Weight: ${widget.product.weight}'),
 
                   const SizedBox(height: 12),
 
-                  /// REVIEW SECTION (SUDAH BALIK + BISA DIKLIK)
+                  /// REVIEW
                   Text(
                     'Review',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -135,7 +186,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
             const SizedBox(height: 8),
 
-            /// PRODUCT DETAILS
+            /// DETAILS
             Padding(
               padding: const EdgeInsets.all(AppDefaults.padding),
               child: Column(
