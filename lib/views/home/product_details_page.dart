@@ -4,21 +4,33 @@ import '../../core/components/app_back_button.dart';
 import '../../core/components/buy_now_row_button.dart';
 import '../../core/components/price_and_quantity.dart';
 import '../../core/components/product_images_slider.dart';
-import '../../core/components/review_row_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/routes/app_routes.dart';
 import '../home/bundle_product_details_page.dart';
 import '../../core/models/dummy_product_model.dart';
 
-class ProductDetailsPage extends StatelessWidget {
+class ProductDetailsPage extends StatefulWidget {
   final ProductModel product;
 
   const ProductDetailsPage({super.key, required this.product});
 
   @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  late int rating;
+
+  @override
+  void initState() {
+    super.initState();
+    rating = widget.product.rating;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final images = product.images.isNotEmpty
-        ? product.images
+    final images = widget.product.images.isNotEmpty
+        ? widget.product.images
         : ['https://i.imgur.com/NOuZzbe.png'];
 
     return Scaffold(
@@ -28,7 +40,7 @@ class ProductDetailsPage extends StatelessWidget {
         title: const Text('Product Details'),
       ),
 
-      /// 🔥 BUTTON SUDAH AKTIF
+      /// BUTTON
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
@@ -36,8 +48,8 @@ class ProductDetailsPage extends StatelessWidget {
             onCartButtonTap: () {
               cart.add(
                 CartItem(
-                  name: product.name,
-                  price: product.price,
+                  name: widget.product.name,
+                  price: widget.product.price,
                   quantity: 1,
                   images: images,
                 ),
@@ -58,45 +70,72 @@ class ProductDetailsPage extends StatelessWidget {
 
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// 🔥 IMAGE DINAMIS
             ProductImagesSlider(images: images),
 
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(AppDefaults.padding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+            Padding(
+              padding: const EdgeInsets.all(AppDefaults.padding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.product.name,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 8),
-                    Text('Weight: ${product.weight}'),
-                  ],
-                ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Text('Weight: ${widget.product.weight}'),
+
+                  const SizedBox(height: 12),
+
+                  /// REVIEW SECTION (SUDAH BALIK + BISA DIKLIK)
+                  Text(
+                    'Review',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  Row(
+                    children: List.generate(5, (index) {
+                      return IconButton(
+                        onPressed: () {
+                          setState(() {
+                            rating = index + 1;
+                            widget.product.rating = rating;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.star,
+                          color: index < rating ? Colors.orange : Colors.grey,
+                        ),
+                      );
+                    }),
+                  ),
+                ],
               ),
             ),
 
-            /// 🔥 PRICE DINAMIS
+            /// PRICE
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppDefaults.padding,
               ),
               child: PriceAndQuantityRow(
-                currentPrice: product.price,
-                orginalPrice: product.mainPrice,
+                currentPrice: widget.product.price,
+                orginalPrice: widget.product.mainPrice,
                 quantity: 1,
               ),
             ),
 
             const SizedBox(height: 8),
 
-            /// Product Details
+            /// PRODUCT DETAILS
             Padding(
               padding: const EdgeInsets.all(AppDefaults.padding),
               child: Column(
@@ -117,17 +156,7 @@ class ProductDetailsPage extends StatelessWidget {
               ),
             ),
 
-            /// Review
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppDefaults.padding),
-              child: Column(
-                children: [
-                  Divider(thickness: 0.1),
-                  ReviewRowButton(totalStars: 5),
-                  Divider(thickness: 0.1),
-                ],
-              ),
-            ),
+            const Divider(thickness: 0.1),
           ],
         ),
       ),

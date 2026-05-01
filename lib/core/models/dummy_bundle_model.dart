@@ -4,6 +4,7 @@ class BundleModel {
   List<String> itemNames;
   double price;
   double mainPrice;
+  int rating; // TAMBAH INI
 
   BundleModel({
     required this.name,
@@ -11,5 +12,6 @@ class BundleModel {
     required this.itemNames,
     required this.price,
     required this.mainPrice,
+    this.rating = 0, // default
   });
 }

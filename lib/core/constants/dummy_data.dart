@@ -11,6 +11,7 @@ class Dummy {
       images: ['https://i.imgur.com/6unJlSL.png'],
       price: 13,
       mainPrice: 15,
+      rating: 3,
     ),
     ProductModel(
       name: 'Vanilla Ice Cream Banana',
@@ -19,6 +20,7 @@ class Dummy {
       images: ['https://i.imgur.com/oaCY49b.png'],
       price: 12,
       mainPrice: 15,
+      rating: 4,
     ),
     ProductModel(
       name: 'Meat',
@@ -27,6 +29,7 @@ class Dummy {
       images: ['https://i.imgur.com/5wghZji.png'],
       price: 15,
       mainPrice: 18,
+      rating: 2,
     ),
   ];
 
@@ -38,6 +41,7 @@ class Dummy {
       itemNames: ['Onion, Oil, Salt'],
       price: 35,
       mainPrice: 50.32,
+      rating: 4, // tambah
     ),
     BundleModel(
       name: 'Medium Spices Pack',
@@ -45,6 +49,7 @@ class Dummy {
       itemNames: ['Onion, Oil, Salt'],
       price: 35,
       mainPrice: 50.32,
+      rating: 5,
     ),
     BundleModel(
       name: 'Bundle Pack',
@@ -52,6 +57,7 @@ class Dummy {
       itemNames: ['Onion, Oil, Salt'],
       price: 35,
       mainPrice: 50.32,
+      rating: 3,
     ),
     BundleModel(
       name: 'Bundle Pack',
@@ -59,6 +65,7 @@ class Dummy {
       itemNames: ['Onion, Oil, Salt'],
       price: 35,
       mainPrice: 50.32,
+      rating: 2,
     ),
   ];
 }

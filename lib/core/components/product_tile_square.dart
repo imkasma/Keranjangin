@@ -20,7 +20,7 @@ class ProductTileSquare extends StatelessWidget {
         child: InkWell(
           borderRadius: AppDefaults.borderRadius,
 
-          /// 🔥 FIX: kirim data ke detail
+          /// FIX: kirim data ke detail
           onTap: () {
             Navigator.push(
               context,

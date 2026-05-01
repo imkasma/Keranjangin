@@ -5,6 +5,8 @@ class ProductModel {
   List<String> images;
   double price;
   double mainPrice;
+  int rating; // TAMBAH INI
+
   ProductModel({
     required this.name,
     required this.weight,
@@ -12,5 +14,6 @@ class ProductModel {
     required this.images,
     required this.price,
     required this.mainPrice,
+    this.rating = 0, // default
   });
 }
