@@ -20,8 +20,9 @@ class PopularPackPage extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDefaults.padding,
+              ),
               child: GridView.builder(
                 padding: const EdgeInsets.only(top: AppDefaults.padding),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -32,9 +33,7 @@ class PopularPackPage extends StatelessWidget {
                 ),
                 itemCount: 8,
                 itemBuilder: (context, index) {
-                  return BundleTileSquare(
-                    data: Dummy.bundles.first,
-                  );
+                  return BundleTileSquare(data: Dummy.bundles.first);
                 },
               ),
             ),
@@ -44,9 +43,7 @@ class PopularPackPage extends StatelessWidget {
               left: 0,
               child: Container(
                 padding: const EdgeInsets.all(AppDefaults.padding * 2),
-                decoration: const BoxDecoration(
-                  color: Colors.white60,
-                ),
+                decoration: const BoxDecoration(color: Colors.white60),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.createMyPack);
@@ -61,7 +58,7 @@ class PopularPackPage extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

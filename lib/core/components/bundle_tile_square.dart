@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
 import '../models/dummy_bundle_model.dart';
-import '../routes/app_routes.dart';
 import 'network_image.dart';
+import '../../views/home/bundle_product_details_page.dart';
 
 class BundleTileSquare extends StatelessWidget {
-  const BundleTileSquare({
-    super.key,
-    required this.data,
-  });
+  const BundleTileSquare({super.key, required this.data});
 
   final BundleModel data;
 
@@ -20,7 +17,16 @@ class BundleTileSquare extends StatelessWidget {
       borderRadius: AppDefaults.borderRadius,
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, AppRoutes.bundleProduct);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BundleProductDetailsPage(
+                name: data.name,
+                price: data.price,
+                images: [data.cover], // bundle biasanya cuma 1 gambar
+              ),
+            ),
+          );
         },
         borderRadius: AppDefaults.borderRadius,
         child: Container(
@@ -34,8 +40,10 @@ class BundleTileSquare extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: NetworkImageWithLoader(
@@ -50,10 +58,9 @@ class BundleTileSquare extends StatelessWidget {
                 children: [
                   Text(
                     data.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.black),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(color: Colors.black),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -69,17 +76,16 @@ class BundleTileSquare extends StatelessWidget {
                 children: [
                   Text(
                     '\$${data.price.toInt()}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.black),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(color: Colors.black),
                   ),
                   const SizedBox(width: 4),
                   Text(
                     '\$${data.mainPrice}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                        ),
+                      decoration: TextDecoration.lineThrough,
+                    ),
                   ),
                   const Spacer(),
                 ],

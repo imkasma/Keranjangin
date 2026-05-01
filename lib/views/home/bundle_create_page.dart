@@ -16,13 +16,15 @@ class BundleCreatePage extends StatelessWidget {
         leading: const AppBackButton(),
         title: const Text('Create My Pack'),
       ),
-      body: const Column(
+      body: Column(
         children: [
-          // SearchBar(),
-          FoodCategories(),
-          SizedBox(height: AppDefaults.padding / 2),
-          ProductGridView(),
-          BottomActionBar(),
+          const FoodCategories(),
+          const SizedBox(height: AppDefaults.padding / 2),
+
+          /// Grid sudah handle klik sendiri
+          const Expanded(child: ProductGridView()),
+
+          const BottomActionBar(),
         ],
       ),
     );

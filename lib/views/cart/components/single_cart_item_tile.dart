@@ -3,14 +3,24 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
+import '../../home/bundle_product_details_page.dart';
 
 class SingleCartItemTile extends StatelessWidget {
+  final CartItem item;
+  final int index;
+
   const SingleCartItemTile({
     super.key,
+    required this.item,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = item.images.isNotEmpty
+        ? item.images.first
+        : 'https://i.imgur.com/4YEHvGc.png';
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDefaults.padding,
@@ -19,84 +29,93 @@ class SingleCartItemTile extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Thumbnail
-              const SizedBox(
+              /// 🔥 Thumbnail
+              SizedBox(
                 width: 70,
                 child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: NetworkImageWithLoader(
-                    'https://i.imgur.com/4YEHvGc.png',
-                    fit: BoxFit.contain,
-                  ),
+                  aspectRatio: 1,
+                  child: NetworkImageWithLoader(imageUrl, fit: BoxFit.contain),
                 ),
               ),
+
               const SizedBox(width: 16),
 
-              /// Quantity and Name
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              /// 🔥 Name + Qty
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyLarge?.copyWith(color: Colors.black),
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    Text(
+                      "Qty: ${item.quantity}",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    /// 🔥 Qty control (belum aktif)
+                    Row(
                       children: [
-                        Text(
-                          'Sulphurfree Bura',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: Colors.black),
+                        IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset(AppIcons.addQuantity),
+                          constraints: const BoxConstraints(),
                         ),
                         Text(
-                          '570 Ml',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          item.quantity.toString(),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset(AppIcons.removeQuantity),
+                          constraints: const BoxConstraints(),
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(AppIcons.addQuantity),
-                        constraints: const BoxConstraints(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '1',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(AppIcons.removeQuantity),
-                        constraints: const BoxConstraints(),
-                      ),
-                    ],
-                  )
-                ],
+                  ],
+                ),
               ),
-              const Spacer(),
 
-              /// Price and Delete labelLarge
+              /// 🔥 Price + Delete
               Column(
                 children: [
                   IconButton(
                     constraints: const BoxConstraints(),
-                    onPressed: () {},
+                    onPressed: () {
+                      cart.removeAt(index);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Item dihapus")),
+                      );
+
+                      // refresh (sementara)
+                      (context as Element).markNeedsBuild();
+                    },
                     icon: SvgPicture.asset(AppIcons.delete),
                   ),
                   const SizedBox(height: 16),
-                  const Text('\$20'),
+                  Text(
+                    '\$${item.price.toStringAsFixed(2)}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
           const Divider(thickness: 0.1),
