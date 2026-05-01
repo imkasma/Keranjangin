@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
 import '../models/dummy_product_model.dart';
-import '../routes/app_routes.dart';
 import 'network_image.dart';
+import '../../views/home/product_details_page.dart'; // 🔥 WAJIB
 
 class ProductTileSquare extends StatelessWidget {
-  const ProductTileSquare({
-    super.key,
-    required this.data,
-  });
+  const ProductTileSquare({super.key, required this.data});
 
   final ProductModel data;
 
@@ -22,7 +19,17 @@ class ProductTileSquare extends StatelessWidget {
         color: AppColors.scaffoldBackground,
         child: InkWell(
           borderRadius: AppDefaults.borderRadius,
-          onTap: () => Navigator.pushNamed(context, AppRoutes.productDetails),
+
+          /// 🔥 FIX: kirim data ke detail
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ProductDetailsPage(product: data),
+              ),
+            );
+          },
+
           child: Container(
             width: 176,
             height: 296,
@@ -44,42 +51,41 @@ class ProductTileSquare extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 8),
+
                 Text(
                   data.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: Colors.black),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(color: Colors.black),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+
                 const Spacer(),
-                Text(
-                  data.weight,
-                ),
+
+                Text(data.weight),
+
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       '\$${data.price.toInt()}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(color: Colors.black),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleLarge?.copyWith(color: Colors.black),
                     ),
-                    const SizedBox(
-                      width: 4,
-                    ),
+                    const SizedBox(width: 4),
                     Text(
                       '\$${data.mainPrice}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            decoration: TextDecoration.lineThrough,
-                          ),
+                        decoration: TextDecoration.lineThrough,
+                      ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

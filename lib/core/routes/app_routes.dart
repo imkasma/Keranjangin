@@ -1,9 +1,9 @@
 class AppRoutes {
-  /// The Initial Page
+  /// Initial
   static const introLogin = '/intro_login';
   static const onboarding = '/onboarding';
 
-  /* <---- Login, Signup -----> */
+  /// Auth
   static const login = '/login';
   static const signup = '/signup';
   static const loginOrSignup = '/loginOrSignup';
@@ -11,22 +11,26 @@ class AppRoutes {
   static const forgotPassword = '/forgotPassword';
   static const passwordReset = '/passwordReset';
 
-  /* <---- ENTRYPOINT -----> */
+  /// Entrypoint
   static const entryPoint = '/entry_point';
 
-  /* <---- Products Order Process -----> */
+  /// Home & Products
   static const home = '/home';
   static const newItems = '/newItems';
   static const popularItems = '/popularItems';
+
   static const bundleProduct = '/bundleProduct';
-  static const createMyPack = '/createMyPack';
   static const bundleDetailsPage = '/bundleDetailsPage';
+  static const createMyPack = '/createMyPack';
+
   static const productDetails = '/productDetails';
+
+  /// Cart & Checkout
   static const cartPage = '/cartPage';
   static const savePage = '/favouriteList';
   static const checkoutPage = '/checkoutPage';
 
-  /// Order Status
+  /// Order
   static const orderSuccessfull = '/orderSuccessfull';
   static const orderFailed = '/orderFailed';
   static const noOrderYet = '/noOrderYet';
@@ -35,12 +39,12 @@ class AppRoutes {
   static const category = '/category';
   static const categoryDetails = '/categoryDetails';
 
-  /// Search Page
+  /// Search
   static const search = '/search';
   static const searchResult = '/searchResult';
 
-  /* <---- Profile & Settings -----> */
-  static const profile = 'profile';
+  /// Profile
+  static const profile = '/profile';
   static const myOrder = '/myOrder';
   static const orderDetails = '/orderDetails';
   static const coupon = '/coupon';
@@ -49,6 +53,8 @@ class AppRoutes {
   static const newAddress = '/newAddress';
   static const orderTracking = '/orderTracking';
   static const profileEdit = '/profileEdit';
+
+  /// Settings
   static const notifications = '/notifications';
   static const settings = '/settings';
   static const settingsLanguage = '/settingsLanguage';
@@ -56,13 +62,11 @@ class AppRoutes {
   static const changePassword = '/changePassword';
   static const changePhoneNumber = '/changePhoneNumber';
 
-  /* <---- Review and Comments -----> */
+  /// Review
   static const review = '/review';
   static const submitReview = '/submitReview';
-  // Not Needed
-  // static const errorPage = '/errorPage';
 
-  /* <---- Drawer Page -----> */
+  /// Drawer
   static const drawerPage = '/drawerPage';
   static const aboutUs = '/aboutUs';
   static const faq = '/faq';
@@ -70,7 +74,7 @@ class AppRoutes {
   static const help = '/help';
   static const contactUs = '/contactUs';
 
-  /* <---- Payment Method -----> */
+  /// Payment
   static const paymentMethod = '/paymentMethod';
   static const paymentCardAdd = '/paymentCardAdd';
 }

@@ -43,6 +43,8 @@ import '../../views/profile/settings/settings_page.dart';
 import '../../views/review/review_page.dart';
 import '../../views/review/submit_review_page.dart';
 import '../../views/save/save_page.dart';
+
+import '../../core/models/dummy_product_model.dart';
 import 'app_routes.dart';
 import 'unknown_page.dart';
 
@@ -60,7 +62,6 @@ class RouteGenerator {
       case AppRoutes.entryPoint:
         return CupertinoPageRoute(builder: (_) => const EntryPointUI());
 
-      /// AUTH UTAMA (gabungan login + signup)
       case AppRoutes.loginOrSignup:
         return CupertinoPageRoute(builder: (_) => const LoginOrSignUpPage());
 
@@ -94,22 +95,41 @@ class RouteGenerator {
       case AppRoutes.popularItems:
         return CupertinoPageRoute(builder: (_) => const PopularPackPage());
 
+      /// BUNDLE (AMAN)
       case AppRoutes.bundleProduct:
-        final args = settings.arguments as Map<String, dynamic>;
+        final args = settings.arguments as Map<String, dynamic>?;
 
         return CupertinoPageRoute(
           builder: (_) => BundleProductDetailsPage(
-            name: args['name'],
-            price: args['price'],
-            images: List<String>.from(args['images']),
+            name: args?['name'] ?? "Bundle",
+            price: args?['price'] ?? 0,
+            images: args?['images'] != null
+                ? List<String>.from(args!['images'])
+                : [],
           ),
         );
 
       case AppRoutes.bundleDetailsPage:
         return CupertinoPageRoute(builder: (_) => const BundleDetailsPage());
 
+      /// PRODUCT (AMAN)
       case AppRoutes.productDetails:
-        return CupertinoPageRoute(builder: (_) => const ProductDetailsPage());
+        final product = settings.arguments as ProductModel?;
+
+        return CupertinoPageRoute(
+          builder: (_) => ProductDetailsPage(
+            product:
+                product ??
+                ProductModel(
+                  name: "Unknown",
+                  weight: "-",
+                  cover: "",
+                  images: [],
+                  price: 0,
+                  mainPrice: 0,
+                ),
+          ),
+        );
 
       case AppRoutes.createMyPack:
         return CupertinoPageRoute(builder: (_) => const BundleCreatePage());
