@@ -34,7 +34,7 @@ class SocialLogins extends StatelessWidget {
 
       if (!context.mounted) return;
 
-      Navigator.pushReplacementNamed(context, AppRoutes.entryPoint);
+      debugPrint("Login berhasil: ${userCredential.user?.email}");
     } catch (e) {
       debugPrint("Error login Google: $e");
 

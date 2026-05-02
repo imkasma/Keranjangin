@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/constants.dart';
 import '../models/dummy_product_model.dart';
 import 'network_image.dart';
-import '../../views/home/product_details_page.dart'; // 🔥 WAJIB
+import '../../views/home/product_details_page.dart';
 
 class ProductTileSquare extends StatelessWidget {
   const ProductTileSquare({super.key, required this.data});
@@ -13,14 +13,15 @@ class ProductTileSquare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding / 2),
+      padding: const EdgeInsets.all(6),
       child: Material(
-        borderRadius: AppDefaults.borderRadius,
-        color: AppColors.scaffoldBackground,
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        elevation: 2, // 🔥 shadow biar naik
         child: InkWell(
-          borderRadius: AppDefaults.borderRadius,
+          borderRadius: BorderRadius.circular(16),
 
-          /// FIX: kirim data ke detail
+          /// 🔥 NAVIGASI KE DETAIL
           onTap: () {
             Navigator.push(
               context,
@@ -31,20 +32,16 @@ class ProductTileSquare extends StatelessWidget {
           },
 
           child: Container(
-            width: 176,
-            height: 296,
-            padding: const EdgeInsets.all(AppDefaults.padding),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              border: Border.all(width: 0.1, color: AppColors.placeholder),
-              borderRadius: AppDefaults.borderRadius,
+              borderRadius: BorderRadius.circular(16),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppDefaults.padding / 2),
-                  child: AspectRatio(
-                    aspectRatio: 1 / 1,
+                /// 🔥 GAMBAR
+                Expanded(
+                  child: Center(
                     child: NetworkImageWithLoader(
                       data.cover,
                       fit: BoxFit.contain,
@@ -54,34 +51,64 @@ class ProductTileSquare extends StatelessWidget {
 
                 const SizedBox(height: 8),
 
+                /// 🔥 NAMA PRODUK
                 Text(
                   data.name,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(color: Colors.black),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
 
+                const SizedBox(height: 4),
+
+                /// 🔥 BERAT
+                Text(
+                  data.weight,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
+                /// ⭐ RATING
+                Row(
+                  children: List.generate(
+                    5,
+                    (index) => Icon(
+                      index < data.rating
+                          ? Icons.star
+                          : Icons.star_border,
+                      size: 14,
+                      color: Colors.orange,
+                    ),
+                  ),
+                ),
+
                 const Spacer(),
 
-                Text(data.weight),
-
+                /// 💰 HARGA
                 Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       '\$${data.price.toInt()}',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleLarge?.copyWith(color: Colors.black),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.green,
+                      ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 6),
                     Text(
                       '\$${data.mainPrice}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
+                        color: Colors.grey,
+                        fontSize: 12,
                       ),
                     ),
                   ],

@@ -53,17 +53,25 @@ class RouteGenerator {
     final route = settings.name;
 
     switch (route) {
+      /// 🔐 AUTH
       case AppRoutes.introLogin:
         return CupertinoPageRoute(builder: (_) => const IntroLoginPage());
 
       case AppRoutes.onboarding:
         return CupertinoPageRoute(builder: (_) => const OnboardingPage());
 
-      case AppRoutes.entryPoint:
-        return CupertinoPageRoute(builder: (_) => const EntryPointUI());
-
       case AppRoutes.loginOrSignup:
         return CupertinoPageRoute(builder: (_) => const LoginOrSignUpPage());
+
+      case AppRoutes.forgotPassword:
+        return CupertinoPageRoute(builder: (_) => const ForgetPasswordPage());
+
+      case AppRoutes.passwordReset:
+        return CupertinoPageRoute(builder: (_) => const PasswordResetPage());
+
+      /// 🏠 MAIN
+      case AppRoutes.entryPoint:
+        return CupertinoPageRoute(builder: (_) => const EntryPointUI());
 
       case AppRoutes.search:
         return CupertinoPageRoute(builder: (_) => const SearchPage());
@@ -74,28 +82,46 @@ class RouteGenerator {
       case AppRoutes.cartPage:
         return CupertinoPageRoute(builder: (_) => const CartPage());
 
-      case AppRoutes.savePage:
-        return CupertinoPageRoute(builder: (_) => const SavePage());
-
       case AppRoutes.checkoutPage:
         return CupertinoPageRoute(builder: (_) => const CheckoutPage());
 
+      case AppRoutes.savePage:
+        return CupertinoPageRoute(builder: (_) => const SavePage());
+
+      /// 🔥 CATEGORY (FIX ARGUMENT)
       case AppRoutes.categoryDetails:
-        return CupertinoPageRoute(builder: (_) => const CategoryProductPage());
+        final category = settings.arguments is String
+            ? settings.arguments as String
+            : "Others";
 
-      case AppRoutes.forgotPassword:
-        return CupertinoPageRoute(builder: (_) => const ForgetPasswordPage());
+        return CupertinoPageRoute(
+          builder: (_) => const CategoryProductPage(),
+          settings: RouteSettings(arguments: category),
+        );
 
-      case AppRoutes.passwordReset:
-        return CupertinoPageRoute(builder: (_) => const PasswordResetPage());
+      /// 🛒 PRODUCT DETAIL (ANTI ERROR)
+      case AppRoutes.productDetails:
+        final product = settings.arguments is ProductModel
+            ? settings.arguments as ProductModel
+            : null;
 
-      case AppRoutes.newItems:
-        return CupertinoPageRoute(builder: (_) => const NewItemsPage());
+        return CupertinoPageRoute(
+          builder: (_) => ProductDetailsPage(
+            product:
+                product ??
+                ProductModel(
+                  name: "Unknown",
+                  weight: "-",
+                  cover: "",
+                  images: [],
+                  price: 0,
+                  mainPrice: 0,
+                  category: "Others",
+                ),
+          ),
+        );
 
-      case AppRoutes.popularItems:
-        return CupertinoPageRoute(builder: (_) => const PopularPackPage());
-
-      /// BUNDLE (AMAN)
+      /// 📦 BUNDLE
       case AppRoutes.bundleProduct:
         final args = settings.arguments as Map<String, dynamic>?;
 
@@ -112,28 +138,10 @@ class RouteGenerator {
       case AppRoutes.bundleDetailsPage:
         return CupertinoPageRoute(builder: (_) => const BundleDetailsPage());
 
-      /// PRODUCT (AMAN)
-      case AppRoutes.productDetails:
-        final product = settings.arguments as ProductModel?;
-
-        return CupertinoPageRoute(
-          builder: (_) => ProductDetailsPage(
-            product:
-                product ??
-                ProductModel(
-                  name: "Unknown",
-                  weight: "-",
-                  cover: "",
-                  images: [],
-                  price: 0,
-                  mainPrice: 0,
-                ),
-          ),
-        );
-
       case AppRoutes.createMyPack:
         return CupertinoPageRoute(builder: (_) => const BundleCreatePage());
 
+      /// 🛍️ ORDER
       case AppRoutes.orderSuccessfull:
         return CupertinoPageRoute(builder: (_) => const OrderSuccessfullPage());
 
@@ -146,31 +154,27 @@ class RouteGenerator {
       case AppRoutes.orderDetails:
         return CupertinoPageRoute(builder: (_) => const OrderDetailsPage());
 
-      case AppRoutes.coupon:
-        return CupertinoPageRoute(builder: (_) => const CouponAndOffersPage());
-
-      case AppRoutes.couponDetails:
-        return CupertinoPageRoute(builder: (_) => const CouponDetailsPage());
-
+      /// 👤 PROFILE
       case AppRoutes.profileEdit:
         return CupertinoPageRoute(builder: (_) => const ProfileEditPage());
-
-      case AppRoutes.newAddress:
-        return CupertinoPageRoute(builder: (_) => const NewAddressPage());
 
       case AppRoutes.deliveryAddress:
         return CupertinoPageRoute(builder: (_) => const AddressPage());
 
+      case AppRoutes.newAddress:
+        return CupertinoPageRoute(builder: (_) => const NewAddressPage());
+
       case AppRoutes.notifications:
         return CupertinoPageRoute(builder: (_) => const NotificationPage());
+
+      /// ⚙️ SETTINGS
+      case AppRoutes.settings:
+        return CupertinoPageRoute(builder: (_) => const SettingsPage());
 
       case AppRoutes.settingsNotifications:
         return CupertinoPageRoute(
           builder: (_) => const NotificationSettingsPage(),
         );
-
-      case AppRoutes.settings:
-        return CupertinoPageRoute(builder: (_) => const SettingsPage());
 
       case AppRoutes.settingsLanguage:
         return CupertinoPageRoute(builder: (_) => const LanguageSettingsPage());
@@ -183,12 +187,21 @@ class RouteGenerator {
           builder: (_) => const ChangePhoneNumberPage(),
         );
 
+      /// 🎟️ COUPON
+      case AppRoutes.coupon:
+        return CupertinoPageRoute(builder: (_) => const CouponAndOffersPage());
+
+      case AppRoutes.couponDetails:
+        return CupertinoPageRoute(builder: (_) => const CouponDetailsPage());
+
+      /// ⭐ REVIEW
       case AppRoutes.review:
         return CupertinoPageRoute(builder: (_) => const ReviewPage());
 
       case AppRoutes.submitReview:
         return CupertinoPageRoute(builder: (_) => const SubmitReviewPage());
 
+      /// 📚 DRAWER
       case AppRoutes.drawerPage:
         return CupertinoPageRoute(builder: (_) => const DrawerPage());
 
@@ -209,17 +222,20 @@ class RouteGenerator {
       case AppRoutes.contactUs:
         return CupertinoPageRoute(builder: (_) => const ContactUsPage());
 
+      /// 💳 PAYMENT
       case AppRoutes.paymentMethod:
         return CupertinoPageRoute(builder: (_) => const PaymentMethodPage());
 
       case AppRoutes.paymentCardAdd:
         return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
 
+      /// ❌ DEFAULT
       default:
         return errorRoute();
     }
   }
 
-  static Route? errorRoute() =>
-      CupertinoPageRoute(builder: (_) => const UnknownPage());
+  static Route? errorRoute() {
+    return CupertinoPageRoute(builder: (_) => const UnknownPage());
+  }
 }
