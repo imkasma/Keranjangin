@@ -10,12 +10,13 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        color: const Color(0xFFF7F8FA),
-        child: Column(
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF7F8FA),
+        body: Column(
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
+            /// 🔥 TITLE
             Text(
               'Choose a category',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -24,9 +25,12 @@ class MenuPage extends StatelessWidget {
                   ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
-            const CateogoriesGrid(),
+            /// 🔥 GRID
+            const Expanded(
+              child: CategoriesGrid(),
+            ),
           ],
         ),
       ),
@@ -34,152 +38,189 @@ class MenuPage extends StatelessWidget {
   }
 }
 
-class CateogoriesGrid extends StatelessWidget {
-  const CateogoriesGrid({super.key});
+class CategoriesGrid extends StatelessWidget {
+  const CategoriesGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.count(
-        padding: const EdgeInsets.all(12),
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 14,
-        childAspectRatio: 0.9,
-        children: [
-          /// 🌱 VEGETABLES (HIJAU TUA)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/tGChxbZ.png',
-            label: 'Vegetables',
-            backgroundColor: const Color.fromARGB(255, 25, 119, 31),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Vegetables');
-            },
-          ),
+    return GridView.count(
+      padding: const EdgeInsets.all(14),
+      crossAxisCount: 3,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
 
-          /// 🥩 MEAT (BIRU MUDA TERANG)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/yOFxoIP.png',
-            label: 'Meat And Fish',
-            backgroundColor: const Color(0xFF4FC3F7),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Meat And Fish');
-            },
-          ),
+      /// 🔥 FIX OVERFLOW DI SINI
+      childAspectRatio: 0.8,
 
-          /// 💊 MEDICINE (MERAH)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/GPsRaFC.png',
-            label: 'Medicine',
-            backgroundColor: const Color(0xFFE53935),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Medicine');
-            },
-          ),
+      children: [
+        /// 🌱 VEGETABLES
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/tGChxbZ.png',
+          label: 'Vegetables',
+          backgroundColor: const Color(0xFF2E7D32),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Vegetables',
+            );
+          },
+        ),
 
-          /// 👶 BABY CARE (KUNING)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/mGRqfnc.png',
-            label: 'Baby Care',
-            backgroundColor: const Color(0xFFFFD54F),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Baby Care');
-            },
-          ),
+        /// 🥩 MEAT
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/yOFxoIP.png',
+          label: 'Meat And Fish',
+          backgroundColor: const Color(0xFF4FC3F7),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Meat And Fish',
+            );
+          },
+        ),
 
-          /// 🏢 OFFICE (BIRU TUA)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/fwyz4oC.png',
-            label: 'Office Supplies',
-            backgroundColor: const Color.fromARGB(255, 75, 115, 176),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Office Supplies');
-            },
-          ),
+        /// 💊 MEDICINE
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/GPsRaFC.png',
+          label: 'Medicine',
+          backgroundColor: const Color(0xFFE53935),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Medicine',
+            );
+          },
+        ),
 
-          /// 💄 BEAUTY (PINK TERANG)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/DNr8a6R.png',
-            label: 'Beauty',
-            backgroundColor: const Color(0xFFFF4081),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Beauty');
-            },
-          ),
+        /// 👶 BABY CARE
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/mGRqfnc.png',
+          label: 'Baby Care',
+          backgroundColor: const Color(0xFFFFD54F),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Baby Care',
+            );
+          },
+        ),
 
-          /// 🏋️ GYM (COKLAT)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/O2ZX5nR.png',
-            label: 'Gym Equipment',
-            backgroundColor: const Color(0xFF6D4C41),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Gym Equipment');
-            },
-          ),
+        /// 🏢 OFFICE
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/fwyz4oC.png',
+          label: 'Office Supplies',
+          backgroundColor: const Color(0xFF5C6BC0),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Office Supplies',
+            );
+          },
+        ),
 
-          /// 🌿 GARDEN (HIJAU TOSCA)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/wJBopjL.png',
-            label: 'Gardening Tools',
-            backgroundColor: const Color.fromARGB(255, 45, 147, 78),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Gardening Tools');
-            },
-          ),
+        /// 💄 BEAUTY
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/DNr8a6R.png',
+          label: 'Beauty',
+          backgroundColor: const Color(0xFFFF4081),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Beauty',
+            );
+          },
+        ),
 
-          /// 🐶 PET (KUNING TERANG)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/P4yJA9t.png',
-            label: 'Pet Care',
-            backgroundColor: const Color(0xFFFFEE58),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Pet Care');
-            },
-          ),
+        /// 🏋️ GYM
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/O2ZX5nR.png',
+          label: 'Gym Equipment',
+          backgroundColor: const Color(0xFF6D4C41),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Gym Equipment',
+            );
+          },
+        ),
 
-          /// 👓 EYE WEAR (UNGU)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/sxGf76e.png',
-            label: 'Eye Wears',
-            backgroundColor: const Color.fromARGB(255, 134, 70, 152),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Eye Wears');
-            },
-          ),
+        /// 🌿 GARDEN
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/wJBopjL.png',
+          label: 'Gardening Tools',
+          backgroundColor: const Color(0xFF43A047),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Gardening Tools',
+            );
+          },
+        ),
 
-          /// 📦 PACK (OREN)
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/BPvKeXl.png',
-            label: 'Pack',
-            backgroundColor: const Color(0xFFFF9800),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Pack');
-            },
-          ),
+        /// 🐶 PET
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/P4yJA9t.png',
+          label: 'Pet Care',
+          backgroundColor: const Color(0xFFFFEE58),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Pet Care',
+            );
+          },
+        ),
 
-          /// 🔸 OTHERS
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/m65fusg.png',
-            label: 'Others',
-            backgroundColor: const Color(0xFF78909C),
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails,
-                  arguments: 'Others');
-            },
-          ),
-        ],
-      ),
+        /// 👓 EYE WEAR
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/sxGf76e.png',
+          label: 'Eye Wears',
+          backgroundColor: const Color(0xFF8E24AA),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Eye Wears',
+            );
+          },
+        ),
+
+        /// 📦 PACK
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/BPvKeXl.png',
+          label: 'Pack',
+          backgroundColor: const Color(0xFFFF9800),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Pack',
+            );
+          },
+        ),
+
+        /// 🔸 OTHERS
+        CategoryTile(
+          imageLink: 'https://i.imgur.com/m65fusg.png',
+          label: 'Others',
+          backgroundColor: const Color(0xFF78909C),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryDetails,
+              arguments: 'Others',
+            );
+          },
+        ),
+      ],
     );
   }
 }

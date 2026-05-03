@@ -12,7 +12,7 @@ class AppRoutes {
   static const passwordReset = '/passwordReset';
 
   /// Entrypoint
-  static const entryPoint = '/entry_point';
+  static const entryPoint = '/entryPoint';
 
   /// Home & Products
   static const home = '/home';

@@ -16,10 +16,8 @@ import '../../views/entrypoint/entrypoint_ui.dart';
 import '../../views/home/bundle_create_page.dart';
 import '../../views/home/bundle_details_page.dart';
 import '../../views/home/bundle_product_details_page.dart';
-import '../../views/home/new_item_page.dart';
 import '../../views/home/order_failed_page.dart';
 import '../../views/home/order_successfull_page.dart';
-import '../../views/home/popular_pack_page.dart';
 import '../../views/home/product_details_page.dart';
 import '../../views/home/search_page.dart';
 import '../../views/home/search_result_page.dart';
@@ -46,19 +44,19 @@ import '../../views/save/save_page.dart';
 
 import '../../core/models/dummy_product_model.dart';
 import 'app_routes.dart';
-import 'unknown_page.dart';
 
 class RouteGenerator {
   static Route? onGenerate(RouteSettings settings) {
     final route = settings.name;
 
     switch (route) {
-      /// 🔐 AUTH
-      case AppRoutes.introLogin:
-        return CupertinoPageRoute(builder: (_) => const IntroLoginPage());
 
+      /// 🔐 AUTH
       case AppRoutes.onboarding:
         return CupertinoPageRoute(builder: (_) => const OnboardingPage());
+
+      case AppRoutes.introLogin:
+        return CupertinoPageRoute(builder: (_) => const IntroLoginPage());
 
       case AppRoutes.loginOrSignup:
         return CupertinoPageRoute(builder: (_) => const LoginOrSignUpPage());
@@ -69,46 +67,44 @@ class RouteGenerator {
       case AppRoutes.passwordReset:
         return CupertinoPageRoute(builder: (_) => const PasswordResetPage());
 
-      /// 🏠 MAIN
+      /// 🏠 MAIN (FIX UTAMA HALAMAN DEPAN)
       case AppRoutes.entryPoint:
+      case AppRoutes.home:
         return CupertinoPageRoute(builder: (_) => const EntryPointUI());
 
+      /// 🔍 SEARCH
       case AppRoutes.search:
         return CupertinoPageRoute(builder: (_) => const SearchPage());
 
       case AppRoutes.searchResult:
         return CupertinoPageRoute(builder: (_) => const SearchResultPage());
 
+      /// 🛒 CART
       case AppRoutes.cartPage:
         return CupertinoPageRoute(builder: (_) => const CartPage());
 
       case AppRoutes.checkoutPage:
         return CupertinoPageRoute(builder: (_) => const CheckoutPage());
 
+      /// 💾 SAVE
       case AppRoutes.savePage:
         return CupertinoPageRoute(builder: (_) => const SavePage());
 
-      /// 🔥 CATEGORY (FIX ARGUMENT)
+      /// 📦 CATEGORY (FIX FINAL)
       case AppRoutes.categoryDetails:
-        final category = settings.arguments is String
-            ? settings.arguments as String
-            : "Others";
+        final category = settings.arguments as String? ?? "Others";
 
         return CupertinoPageRoute(
-          builder: (_) => const CategoryProductPage(),
-          settings: RouteSettings(arguments: category),
+          builder: (_) => CategoryProductPage(category: category),
         );
 
-      /// 🛒 PRODUCT DETAIL (ANTI ERROR)
+      /// 🛍️ PRODUCT DETAIL (SAFE)
       case AppRoutes.productDetails:
-        final product = settings.arguments is ProductModel
-            ? settings.arguments as ProductModel
-            : null;
+        final product = settings.arguments as ProductModel?;
 
         return CupertinoPageRoute(
           builder: (_) => ProductDetailsPage(
-            product:
-                product ??
+            product: product ??
                 ProductModel(
                   name: "Unknown",
                   weight: "-",
@@ -123,15 +119,13 @@ class RouteGenerator {
 
       /// 📦 BUNDLE
       case AppRoutes.bundleProduct:
-        final args = settings.arguments as Map<String, dynamic>?;
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
 
         return CupertinoPageRoute(
           builder: (_) => BundleProductDetailsPage(
-            name: args?['name'] ?? "Bundle",
-            price: args?['price'] ?? 0,
-            images: args?['images'] != null
-                ? List<String>.from(args!['images'])
-                : [],
+            name: args['name'] ?? "Bundle",
+            price: args['price'] ?? 0,
+            images: List<String>.from(args['images'] ?? []),
           ),
         );
 
@@ -172,9 +166,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const SettingsPage());
 
       case AppRoutes.settingsNotifications:
-        return CupertinoPageRoute(
-          builder: (_) => const NotificationSettingsPage(),
-        );
+        return CupertinoPageRoute(builder: (_) => const NotificationSettingsPage());
 
       case AppRoutes.settingsLanguage:
         return CupertinoPageRoute(builder: (_) => const LanguageSettingsPage());
@@ -183,9 +175,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const ChangePasswordPage());
 
       case AppRoutes.changePhoneNumber:
-        return CupertinoPageRoute(
-          builder: (_) => const ChangePhoneNumberPage(),
-        );
+        return CupertinoPageRoute(builder: (_) => const ChangePhoneNumberPage());
 
       /// 🎟️ COUPON
       case AppRoutes.coupon:
@@ -209,9 +199,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const AboutUsPage());
 
       case AppRoutes.termsAndConditions:
-        return CupertinoPageRoute(
-          builder: (_) => const TermsAndConditionsPage(),
-        );
+        return CupertinoPageRoute(builder: (_) => const TermsAndConditionsPage());
 
       case AppRoutes.faq:
         return CupertinoPageRoute(builder: (_) => const FAQPage());
@@ -229,13 +217,9 @@ class RouteGenerator {
       case AppRoutes.paymentCardAdd:
         return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
 
-      /// ❌ DEFAULT
+      /// ❌ DEFAULT (ANTI BLANK SCREEN FIX)
       default:
-        return errorRoute();
+        return CupertinoPageRoute(builder: (_) => const EntryPointUI());
     }
-  }
-
-  static Route? errorRoute() {
-    return CupertinoPageRoute(builder: (_) => const UnknownPage());
   }
 }
