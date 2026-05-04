@@ -7,7 +7,7 @@ import '../../core/components/product_images_slider.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/constants/global_data.dart';
 import '../../core/routes/app_routes.dart';
-import '../../core/models/dummy_product_model.dart';
+import '../../core/models/product_model.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final ProductModel product;

@@ -1,80 +1,78 @@
 class AppRoutes {
   /// Initial
-  static const introLogin = '/intro_login';
-  static const onboarding = '/onboarding';
+  static const String introLogin = '/intro_login';
+  static const String onboarding = '/onboarding';
 
   /// Auth
-  static const login = '/login';
-  static const signup = '/signup';
-  static const loginOrSignup = '/loginOrSignup';
-  static const numberVerification = '/numberVerification';
-  static const forgotPassword = '/forgotPassword';
-  static const passwordReset = '/passwordReset';
+  static const String login = '/login';
+  static const String signup = '/signup';
+  static const String loginOrSignup = '/loginOrSignup';
+  static const String numberVerification = '/numberVerification';
+  static const String forgotPassword = '/forgotPassword';
+  static const String passwordReset = '/passwordReset';
 
-  /// Entrypoint
-  static const entryPoint = '/entryPoint';
+  /// Entrypoint (Main Wrapper)
+  static const String entryPoint = '/entryPoint';
 
   /// Home & Products
-  static const home = '/home';
-  static const newItems = '/newItems';
-  static const popularItems = '/popularItems';
-
-  static const bundleProduct = '/bundleProduct';
-  static const bundleDetailsPage = '/bundleDetailsPage';
-  static const createMyPack = '/createMyPack';
-
-  static const productDetails = '/productDetails';
+  static const String home = '/home';
+  static const String newItems = '/newItems';
+  static const String popularItems = '/popularItems';
+  static const String bundleProduct = '/bundleProduct';
+  static const String bundleDetailsPage = '/bundleDetailsPage';
+  static const String createMyPack = '/createMyPack';
+  static const String productDetails = '/productDetails';
 
   /// Cart & Checkout
-  static const cartPage = '/cartPage';
-  static const savePage = '/favouriteList';
-  static const checkoutPage = '/checkoutPage';
+  static const String cartPage = '/cartPage';
+  static const String savePage = '/favouriteList';
+  static const String checkoutPage = '/checkoutPage';
 
   /// Order
-  static const orderSuccessfull = '/orderSuccessfull';
-  static const orderFailed = '/orderFailed';
-  static const noOrderYet = '/noOrderYet';
+  static const String orderSuccessfull = '/orderSuccessfull';
+  static const String orderFailed = '/orderFailed';
+  static const String noOrderYet = '/noOrderYet';
 
   /// Category
-  static const category = '/category';
-  static const categoryDetails = '/categoryDetails';
+  static const String category = '/category';
+  static const String categoryDetails = '/categoryDetails';
 
   /// Search
-  static const search = '/search';
-  static const searchResult = '/searchResult';
+  static const String search = '/search';
+  static const String searchResult = '/searchResult';
 
   /// Profile
-  static const profile = '/profile';
-  static const myOrder = '/myOrder';
-  static const orderDetails = '/orderDetails';
-  static const coupon = '/coupon';
-  static const couponDetails = '/couponDetails';
-  static const deliveryAddress = '/deliveryAddress';
-  static const newAddress = '/newAddress';
-  static const orderTracking = '/orderTracking';
-  static const profileEdit = '/profileEdit';
+  static const String profile = '/profile';
+  static const String myOrder = '/myOrder';
+  static const String orderDetails = '/orderDetails';
+  static const String coupon = '/coupon';
+  static const String couponDetails = '/couponDetails';
+  static const String deliveryAddress = '/deliveryAddress';
+  static const String newAddress = '/newAddress';
+  static const String orderTracking = '/orderTracking';
+  static const String profileEdit = '/profileEdit';
 
   /// Settings
-  static const notifications = '/notifications';
-  static const settings = '/settings';
-  static const settingsLanguage = '/settingsLanguage';
-  static const settingsNotifications = '/settingsNotifications';
-  static const changePassword = '/changePassword';
-  static const changePhoneNumber = '/changePhoneNumber';
+  static const String notifications = '/notifications';
+  static const String settings = '/settings';
+  static const String settingsLanguage = '/settingsLanguage';
+  static const String settingsNotifications = '/settingsNotifications';
+  static const String changePassword = '/changePassword';
+  static const String changePhoneNumber = '/changePhoneNumber';
 
   /// Review
-  static const review = '/review';
-  static const submitReview = '/submitReview';
+  static const String review = '/review';
+  static const String submitReview = '/submitReview';
 
-  /// Drawer
-  static const drawerPage = '/drawerPage';
-  static const aboutUs = '/aboutUs';
-  static const faq = '/faq';
-  static const termsAndConditions = '/termsAndConditions';
-  static const help = '/help';
-  static const contactUs = '/contactUs';
+  /// Drawer / Info
+  static const String drawerPage = '/drawerPage';
+  static const String aboutUs = '/aboutUs';
+  static const String faq = '/faq';
+  static const String termsAndConditions = '/termsAndConditions';
+  static const String help = '/help';
+  static const String contactUs = '/contactUs';
 
   /// Payment
-  static const paymentMethod = '/paymentMethod';
-  static const paymentCardAdd = '/paymentCardAdd';
+  static const String paymentMethod = '/paymentMethod';
+  static const String paymentCardAdd = '/paymentCardAdd';
 }

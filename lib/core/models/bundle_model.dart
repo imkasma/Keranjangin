@@ -12,6 +12,6 @@ class BundleModel {
     required this.itemNames,
     required this.price,
     required this.mainPrice,
-    this.rating = 0, // default
+    this.rating = 0,
   });
 }

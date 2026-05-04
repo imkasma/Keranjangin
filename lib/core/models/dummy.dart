@@ -1,4 +1,4 @@
-import 'dummy_product_model.dart';
+import 'product_model.dart';
 
 class Dummy {
   static List<ProductModel> products = [

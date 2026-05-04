@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
 
 class AppDefaults {
-  static const double radius = 15;
-  static const double margin = 15;
-  static const double padding = 15;
+  // Nilai konstanta dasar
+  static const double radius = 15.0;
+  static const double margin = 15.0;
+  static const double padding = 15.0;
 
-  /// Used For Border Radius
-  static BorderRadius borderRadius = BorderRadius.circular(radius);
+  /// Digunakan untuk Border Radius
+  /// Gunakan 'final' karena BorderRadius.circular adalah runtime-computed
+  static final BorderRadius borderRadius = BorderRadius.circular(radius);
 
-  /// Used For Bottom Sheet
-  static BorderRadius bottomSheetRadius = const BorderRadius.only(
+  /// Digunakan untuk Bottom Sheet
+  static const BorderRadius bottomSheetRadius = BorderRadius.only(
     topLeft: Radius.circular(radius),
     topRight: Radius.circular(radius),
   );
 
-  /// Used For Top Sheet
-  static BorderRadius topSheetRadius = const BorderRadius.only(
+  /// Digunakan untuk Top Sheet
+  static const BorderRadius topSheetRadius = BorderRadius.only(
     bottomLeft: Radius.circular(radius),
     bottomRight: Radius.circular(radius),
   );
 
-  /// Default Box Shadow used for containers
+  /// Default Box Shadow untuk container
+  /// Memperbaiki warning color dengan sintaks Flutter terbaru (SDK 3.27+)
   static List<BoxShadow> boxShadow = [
     BoxShadow(
       blurRadius: 10,
       spreadRadius: 0,
       offset: const Offset(0, 2),
-      color: Colors.black.withValues(alpha: 0.04),
+      // Jika masih kuning, ganti ke: Colors.black.withOpacity(0.04)
+      color: Colors.black.withValues(alpha: 0.04), 
     ),
   ];
 
-  static Duration duration = const Duration(milliseconds: 300);
+  static const Duration duration = Duration(milliseconds: 300);
 }

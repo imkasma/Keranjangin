@@ -1,4 +1,4 @@
-import '../models/dummy_product_model.dart';
+import '../models/product_model.dart';
 
 /// =======================
 /// CART MODEL

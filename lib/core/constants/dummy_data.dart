@@ -1,5 +1,5 @@
-import '../models/dummy_bundle_model.dart';
-import '../models/dummy_product_model.dart';
+import '../models/bundle_model.dart';
+import '../models/product_model.dart';
 
 class Dummy {
   /// =========================

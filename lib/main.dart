@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
+// Import Routes
 import 'core/routes/app_routes.dart';
 import 'core/routes/on_generate_route.dart';
 import 'core/themes/app_themes.dart';
+import 'core/viewmodels/product_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const MyApp());
+  runApp(
+    // Bungkus dengan MultiProvider
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        // ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -26,7 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.defaultTheme,
       onGenerateRoute: RouteGenerator.onGenerate,
-      initialRoute: AppRoutes.entryPoint,
+      initialRoute: AppRoutes.onboarding,
     );
   }
 }

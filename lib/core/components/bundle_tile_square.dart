@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
-import '../models/dummy_bundle_model.dart';
+import '../models/bundle_model.dart';
 import 'network_image.dart';
 import '../../views/home/bundle_product_details_page.dart';
 
