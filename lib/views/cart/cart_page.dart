@@ -4,14 +4,20 @@ import '../../core/components/app_back_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/constants/global_data.dart';
 import '../../core/routes/app_routes.dart';
+import '../../core/utils/currency_formatter.dart';
 import 'components/coupon_code_field.dart';
 import 'components/single_cart_item_tile.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key, this.isHomePage = false});
 
   final bool isHomePage;
 
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     double total = cart.fold(
@@ -20,7 +26,7 @@ class CartPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: isHomePage
+      appBar: widget.isHomePage
           ? null
           : AppBar(
               leading: const AppBackButton(),
@@ -38,8 +44,19 @@ class CartPage extends StatelessWidget {
                 )
               else
                 ...cart.asMap().entries.map(
-                  (entry) =>
-                      SingleCartItemTile(item: entry.value, index: entry.key),
+                  (entry) => SingleCartItemTile(
+                    item: entry.value,
+                    index: entry.key,
+                    onDelete: () {
+                      setState(() {
+                        cart.removeAt(entry.key);
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Item dihapus")),
+                      );
+                    },
+                  ),
                 ),
 
               const CouponCodeField(),
@@ -48,7 +65,7 @@ class CartPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(AppDefaults.padding),
                 child: Text(
-                  "Total: \$${total.toStringAsFixed(2)}",
+                  "Total: ${CurrencyFormatter.toRupiah(total)}",
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

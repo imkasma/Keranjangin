@@ -3,105 +3,104 @@ import 'package:flutter/material.dart';
 import '../../core/components/app_back_button.dart';
 import '../../core/components/buy_now_row_button.dart';
 import '../../core/components/price_and_quantity.dart';
-import '../../core/constants/constants.dart';
+import '../../core/constants/app_defaults.dart';
+import '../../core/models/bundle_model.dart';
 import '../../core/constants/global_data.dart';
 import '../../core/routes/app_routes.dart';
-import 'components/bundle_meta_data.dart';
-import 'components/bundle_pack_details.dart';
 
-class BundleProductDetailsPage extends StatefulWidget {
-  final String name;
-  final double price;
-  final List<String> images;
+class BundleDetailsPage extends StatefulWidget {
+  final BundleModel bundle;
 
-  const BundleProductDetailsPage({
-    super.key,
-    required this.name,
-    required this.price,
-    required this.images,
-  });
+  const BundleDetailsPage({super.key, required this.bundle});
 
   @override
-  State<BundleProductDetailsPage> createState() =>
-      _BundleProductDetailsPageState();
+  State<BundleDetailsPage> createState() => _BundleDetailsPageState();
 }
 
-class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
-  int rating = 3;
+class _BundleDetailsPageState extends State<BundleDetailsPage> {
+  int rating = 4;
+  bool isFavorite = false;
+  int quantity = 1;
 
-  /// CEK FAVORITE (KHUSUS BUNDLE = product null)
-  bool get isFavorite =>
-      wishlist.any((item) => item.name == widget.name && item.product == null);
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = wishlist.any((e) => e.name == widget.bundle.name);
+  }
 
-  /// TOGGLE WISHLIST
   void toggleWishlist() {
     setState(() {
       if (isFavorite) {
-        wishlist.removeWhere(
-          (item) => item.name == widget.name && item.product == null,
-        );
+        wishlist.removeWhere((e) => e.name == widget.bundle.name);
       } else {
         wishlist.add(
           WishlistItem(
-            name: widget.name,
-            price: widget.price,
-            images: widget.images,
-            product: null, // penanda bundle
+            name: widget.bundle.name,
+            price: widget.bundle.price,
+            images: [widget.bundle.cover],
+            product: null,
           ),
         );
       }
+      isFavorite = !isFavorite;
     });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          isFavorite ? "Dihapus dari wishlist" : "Ditambahkan ke wishlist ❤️",
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = widget.images.isNotEmpty
-        ? widget.images.first
-        : 'https://i.imgur.com/NOuZzbe.png';
+    final images = [widget.bundle.cover];
 
     return Scaffold(
+      backgroundColor: Colors.grey[100],
+
       appBar: AppBar(
         leading: const AppBackButton(),
-        title: const Text('Bundle Details'),
+        title: Text(widget.bundle.name),
+        actions: [
+          IconButton(
+            onPressed: toggleWishlist,
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.black,
+            ),
+          ),
+        ],
+      ),
+
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppDefaults.padding),
+          child: BuyNowRow(
+            onCartButtonTap: () {
+              cart.add(
+                CartItem(
+                  name: widget.bundle.name,
+                  price: widget.bundle.price,
+                  quantity: quantity,
+                  images: images,
+                ),
+              );
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Bundle masuk keranjang")),
+              );
+            },
+            onBuyButtonTap: () {
+              Navigator.pushNamed(context, AppRoutes.checkoutPage);
+            },
+          ),
+        ),
       ),
 
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// =====================
-            /// IMAGE + LOVE (ATAS)
-            /// =====================
-            Stack(
-              children: [
-                Image.network(imageUrl),
-
-                Positioned(
-                  top: 16,
-                  right: 16,
-                  child: GestureDetector(
-                    onTap: toggleWishlist,
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Colors.red : Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            Image.network(
+              widget.bundle.cover,
+              height: 260,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
 
             Padding(
@@ -109,40 +108,34 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// =====================
-                  /// TITLE + LOVE (BAWAH)
-                  /// =====================
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.name,
-                          style: Theme.of(context).textTheme.headlineSmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-
-                      IconButton(
-                        onPressed: toggleWishlist,
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : Colors.grey,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    widget.bundle.name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
 
-                  /// RATING
+                  ...widget.bundle.itemNames.map(
+                    (e) => Row(
+                      children: [
+                        const Icon(Icons.check, color: Colors.green),
+                        const SizedBox(width: 6),
+                        Text(e),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ⭐ REVIEW
                   Row(
                     children: List.generate(5, (index) {
                       return IconButton(
                         onPressed: () {
-                          setState(() {
-                            rating = index + 1;
-                          });
+                          setState(() => rating = index + 1);
                         },
                         icon: Icon(
                           Icons.star,
@@ -151,43 +144,25 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                       );
                     }),
                   ),
-
-                  PriceAndQuantityRow(
-                    currentPrice: widget.price,
-                    orginalPrice: widget.price + 10,
-                    quantity: 1,
-                  ),
-
-                  const SizedBox(height: AppDefaults.padding / 2),
-                  const BundleMetaData(),
-                  const PackDetails(),
-                  const Divider(thickness: 0.1),
-
-                  /// =====================
-                  /// BUTTON
-                  /// =====================
-                  BuyNowRow(
-                    onCartButtonTap: () {
-                      cart.add(
-                        CartItem(
-                          name: widget.name,
-                          price: widget.price,
-                          quantity: 1,
-                          images: widget.images,
-                        ),
-                      );
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Ditambahkan ke keranjang"),
-                        ),
-                      );
-                    },
-                    onBuyButtonTap: () {
-                      Navigator.pushNamed(context, AppRoutes.checkoutPage);
-                    },
-                  ),
                 ],
+              ),
+            ),
+
+            // 💰 PRICE + QTY (WAJIB STABIL)
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDefaults.padding,
+              ),
+              child: PriceAndQuantityRow(
+                currentPrice: widget.bundle.price,
+                orginalPrice: widget.bundle.mainPrice,
+                quantity: quantity,
+                onIncrease: () => setState(() => quantity++),
+                onDecrease: () {
+                  if (quantity > 1) {
+                    setState(() => quantity--);
+                  }
+                },
               ),
             ),
           ],

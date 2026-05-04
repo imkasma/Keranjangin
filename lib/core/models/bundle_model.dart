@@ -1,10 +1,10 @@
 class BundleModel {
-  String name;
-  String cover;
-  List<String> itemNames;
-  double price;
-  double mainPrice;
-  int rating; // TAMBAH INI
+  final String name;
+  final String cover;
+  final List<String> itemNames;
+  final double price;
+  final double mainPrice;
+  final int rating;
 
   BundleModel({
     required this.name,
@@ -14,4 +14,7 @@ class BundleModel {
     required this.mainPrice,
     this.rating = 0,
   });
+
+  /// 🔥 helper: cek ada diskon atau tidak
+  bool get hasDiscount => mainPrice > price;
 }

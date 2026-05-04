@@ -1,30 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// Import Views
+// AUTH
 import '../../views/auth/forget_password_page.dart';
 import '../../views/auth/intro_login_page.dart';
 import '../../views/auth/login_or_signup_page.dart';
 import '../../views/auth/password_reset_page.dart';
+
+// CART
 import '../../views/cart/cart_page.dart';
 import '../../views/cart/checkout_page.dart';
+
+// DRAWER
 import '../../views/drawer/about_us_page.dart';
 import '../../views/drawer/contact_us_page.dart';
 import '../../views/drawer/drawer_page.dart';
 import '../../views/drawer/faq_page.dart';
 import '../../views/drawer/help_page.dart';
 import '../../views/drawer/terms_and_conditions_page.dart';
+
+// ENTRY
 import '../../views/entrypoint/entrypoint_ui.dart';
+
+// HOME
 import '../../views/home/bundle_create_page.dart';
 import '../../views/home/bundle_details_page.dart';
-import '../../views/home/bundle_product_details_page.dart';
 import '../../views/home/order_failed_page.dart';
 import '../../views/home/order_successfull_page.dart';
 import '../../views/home/product_details_page.dart';
 import '../../views/home/search_page.dart';
 import '../../views/home/search_result_page.dart';
+
+// MENU
 import '../../views/menu/category_page.dart';
+
+// ONBOARDING
 import '../../views/onboarding/onboarding_page.dart';
+
+// PROFILE
 import '../../views/profile/address/address_page.dart';
 import '../../views/profile/address/new_address_page.dart';
 import '../../views/profile/coupon/coupon_details_page.dart';
@@ -40,12 +53,17 @@ import '../../views/profile/settings/change_phone_number_page.dart';
 import '../../views/profile/settings/language_settings_page.dart';
 import '../../views/profile/settings/notifications_settings_page.dart';
 import '../../views/profile/settings/settings_page.dart';
+
+// REVIEW
 import '../../views/review/review_page.dart';
 import '../../views/review/submit_review_page.dart';
+
+// SAVE
 import '../../views/save/save_page.dart';
 
-// Import Models & Routes
+// MODEL
 import '../models/product_model.dart';
+import '../models/bundle_model.dart';
 import 'app_routes.dart';
 
 class RouteGenerator {
@@ -53,7 +71,7 @@ class RouteGenerator {
     final routeName = settings.name;
 
     switch (routeName) {
-      /// 🔐 AUTH
+      // ================= AUTH =================
       case AppRoutes.onboarding:
         return CupertinoPageRoute(builder: (_) => const OnboardingPage());
 
@@ -69,41 +87,39 @@ class RouteGenerator {
       case AppRoutes.passwordReset:
         return CupertinoPageRoute(builder: (_) => const PasswordResetPage());
 
-      /// 🏠 MAIN
+      // ================= ENTRY =================
       case AppRoutes.entryPoint:
       case AppRoutes.home:
         return CupertinoPageRoute(builder: (_) => const EntryPointUI());
 
-      /// 🔍 SEARCH
+      // ================= SEARCH =================
       case AppRoutes.search:
         return CupertinoPageRoute(builder: (_) => const SearchPage());
 
       case AppRoutes.searchResult:
         return CupertinoPageRoute(builder: (_) => const SearchResultPage());
 
-      /// 🛒 CART
+      // ================= CART =================
       case AppRoutes.cartPage:
         return CupertinoPageRoute(builder: (_) => const CartPage());
 
       case AppRoutes.checkoutPage:
         return CupertinoPageRoute(builder: (_) => const CheckoutPage());
 
-      /// 💾 SAVE
+      // ================= SAVE =================
       case AppRoutes.savePage:
         return CupertinoPageRoute(builder: (_) => const SavePage());
 
-      /// 📦 CATEGORY
+      // ================= CATEGORY =================
       case AppRoutes.categoryDetails:
         final category = settings.arguments as String? ?? "Others";
         return CupertinoPageRoute(
           builder: (_) => CategoryProductPage(category: category),
         );
 
-      /// 🛍️ PRODUCT DETAIL
+      // ================= PRODUCT =================
       case AppRoutes.productDetails:
-        final product = settings.arguments is ProductModel
-            ? settings.arguments as ProductModel
-            : null;
+        final product = settings.arguments as ProductModel?;
 
         return CupertinoPageRoute(
           builder: (_) => ProductDetailsPage(
@@ -121,25 +137,23 @@ class RouteGenerator {
           ),
         );
 
-      /// 📦 BUNDLE
-      case AppRoutes.bundleProduct:
-        final args = settings.arguments as Map<String, dynamic>? ?? {};
+      // ================= BUNDLE (ONLY THIS LEFT) =================
+      case AppRoutes.bundleDetailsPage:
+        final bundle = settings.arguments as BundleModel?;
+
+        if (bundle == null) {
+          return CupertinoPageRoute(
+            builder: (_) => const Scaffold(
+              body: Center(child: Text("Bundle data is null")),
+            ),
+          );
+        }
+
         return CupertinoPageRoute(
-          builder: (_) => BundleProductDetailsPage(
-            name: args['name'] ?? "Bundle",
-            price: (args['price'] ?? 0)
-                .toDouble(), // Pastikan double jika model meminta double
-            images: List<String>.from(args['images'] ?? []),
-          ),
+          builder: (_) => BundleDetailsPage(bundle: bundle),
         );
 
-      case AppRoutes.bundleDetailsPage:
-        return CupertinoPageRoute(builder: (_) => const BundleDetailsPage());
-
-      case AppRoutes.createMyPack:
-        return CupertinoPageRoute(builder: (_) => const BundleCreatePage());
-
-      /// 🛍️ ORDER
+      // ================= ORDER =================
       case AppRoutes.orderSuccessfull:
         return CupertinoPageRoute(builder: (_) => const OrderSuccessfullPage());
 
@@ -152,7 +166,7 @@ class RouteGenerator {
       case AppRoutes.orderDetails:
         return CupertinoPageRoute(builder: (_) => const OrderDetailsPage());
 
-      /// 👤 PROFILE
+      // ================= PROFILE =================
       case AppRoutes.profileEdit:
         return CupertinoPageRoute(builder: (_) => const ProfileEditPage());
 
@@ -165,7 +179,7 @@ class RouteGenerator {
       case AppRoutes.notifications:
         return CupertinoPageRoute(builder: (_) => const NotificationPage());
 
-      /// ⚙️ SETTINGS
+      // ================= SETTINGS =================
       case AppRoutes.settings:
         return CupertinoPageRoute(builder: (_) => const SettingsPage());
 
@@ -185,49 +199,7 @@ class RouteGenerator {
           builder: (_) => const ChangePhoneNumberPage(),
         );
 
-      /// 🎟️ COUPON
-      case AppRoutes.coupon:
-        return CupertinoPageRoute(builder: (_) => const CouponAndOffersPage());
-
-      case AppRoutes.couponDetails:
-        return CupertinoPageRoute(builder: (_) => const CouponDetailsPage());
-
-      /// ⭐ REVIEW
-      case AppRoutes.review:
-        return CupertinoPageRoute(builder: (_) => const ReviewPage());
-
-      case AppRoutes.submitReview:
-        return CupertinoPageRoute(builder: (_) => const SubmitReviewPage());
-
-      /// 📚 DRAWER
-      case AppRoutes.drawerPage:
-        return CupertinoPageRoute(builder: (_) => const DrawerPage());
-
-      case AppRoutes.aboutUs:
-        return CupertinoPageRoute(builder: (_) => const AboutUsPage());
-
-      case AppRoutes.termsAndConditions:
-        return CupertinoPageRoute(
-          builder: (_) => const TermsAndConditionsPage(),
-        );
-
-      case AppRoutes.faq:
-        return CupertinoPageRoute(builder: (_) => const FAQPage());
-
-      case AppRoutes.help:
-        return CupertinoPageRoute(builder: (_) => const HelpPage());
-
-      case AppRoutes.contactUs:
-        return CupertinoPageRoute(builder: (_) => const ContactUsPage());
-
-      /// 💳 PAYMENT
-      case AppRoutes.paymentMethod:
-        return CupertinoPageRoute(builder: (_) => const PaymentMethodPage());
-
-      case AppRoutes.paymentCardAdd:
-        return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
-
-      /// ❌ DEFAULT
+      // ================= DEFAULT =================
       default:
         return CupertinoPageRoute(builder: (_) => const EntryPointUI());
     }

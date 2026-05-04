@@ -8,6 +8,7 @@ import '../../core/constants/app_defaults.dart';
 import '../../core/constants/global_data.dart';
 import '../../core/routes/app_routes.dart';
 import '../../core/models/product_model.dart';
+import '../../core/utils/currency_formatter.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final ProductModel product;
@@ -22,16 +23,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late int rating;
   bool isFavorite = false;
 
+  // FIX QUANTITY
+  int quantity = 1;
+
   @override
   void initState() {
     super.initState();
     rating = widget.product.rating;
 
-    /// CEK DARI WISHLIST (PAKAI PRODUCT)
     isFavorite = wishlist.any((item) => item.product == widget.product);
   }
 
-  /// TOGGLE WISHLIST
   void toggleWishlist() {
     setState(() {
       if (isFavorite) {
@@ -42,7 +44,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             name: widget.product.name,
             price: widget.product.price,
             images: widget.product.images,
-            product: widget.product, // 🔥 penting
+            product: widget.product,
           ),
         );
       }
@@ -69,8 +71,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text('Product Details'),
-
-        /// LOVE APPBAR
         actions: [
           IconButton(
             onPressed: toggleWishlist,
@@ -82,9 +82,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ],
       ),
 
-      /// =======================
-      /// BOTTOM BUTTON
-      /// =======================
+      // ================= BOTTOM BUTTON =================
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
@@ -94,7 +92,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 CartItem(
                   name: widget.product.name,
                   price: widget.product.price,
-                  quantity: 1,
+                  quantity: quantity, // 🔥 FIX INI
                   images: images,
                 ),
               );
@@ -112,14 +110,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ),
       ),
 
-      /// =======================
-      /// BODY
-      /// =======================
+      // ================= BODY =================
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// LOVE DI GAMBAR (SYNC)
             ProductImagesSlider(
               images: images,
               isFavorite: isFavorite,
@@ -143,7 +138,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                   const SizedBox(height: 12),
 
-                  /// REVIEW
                   Text(
                     'Review',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -172,7 +166,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
 
-            /// PRICE
+            // ================= PRICE + QUANTITY FIX =================
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppDefaults.padding,
@@ -180,13 +174,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               child: PriceAndQuantityRow(
                 currentPrice: widget.product.price,
                 orginalPrice: widget.product.mainPrice,
-                quantity: 1,
+                quantity: quantity,
+                onIncrease: () {
+                  setState(() {
+                    quantity++;
+                  });
+                },
+                onDecrease: () {
+                  if (quantity > 1) {
+                    setState(() {
+                      quantity--;
+                    });
+                  }
+                },
               ),
             ),
 
             const SizedBox(height: 8),
 
-            /// DETAILS
             Padding(
               padding: const EdgeInsets.all(AppDefaults.padding),
               child: Column(

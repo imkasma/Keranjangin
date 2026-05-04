@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/global_data.dart';
 import '../home/product_details_page.dart';
-import '../home/bundle_product_details_page.dart';
+import '../home/bundle_details_page.dart';
+import '../../core/utils/currency_formatter.dart';
 import 'empty_save_page.dart';
 
 class SavePage extends StatefulWidget {
@@ -34,10 +35,9 @@ class _SavePageState extends State<SavePage> {
           final item = wishlist[index];
 
           return Card(
-            margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
               onTap: () {
-                /// 🔥 FIX: CEK DARI product
+                // ================= PRODUCT =================
                 if (item.product != null) {
                   Navigator.push(
                     context,
@@ -46,39 +46,32 @@ class _SavePageState extends State<SavePage> {
                           ProductDetailsPage(product: item.product!),
                     ),
                   );
-                } else {
+                  return;
+                }
+
+                // ================= BUNDLE =================
+                if (item.bundle != null) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => BundleProductDetailsPage(
-                        name: item.name,
-                        price: item.price,
-                        images: item.images,
-                      ),
+                      builder: (_) => BundleDetailsPage(bundle: item.bundle!),
                     ),
                   );
+                  return;
                 }
               },
 
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  item.images.isNotEmpty
-                      ? item.images[0]
-                      : 'https://i.imgur.com/NOuZzbe.png',
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                ),
+              leading: Image.network(
+                item.images.isNotEmpty
+                    ? item.images.first
+                    : 'https://i.imgur.com/NOuZzbe.png',
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
               ),
 
-              title: Text(
-                item.name,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-
-              subtitle: Text("\$${item.price}"),
+              title: Text(item.name),
+              subtitle: Text(CurrencyFormatter.toRupiah(item.price)),
 
               trailing: IconButton(
                 icon: const Icon(Icons.favorite, color: Colors.red),

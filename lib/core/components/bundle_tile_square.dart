@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../constants/constants.dart';
 import '../models/bundle_model.dart';
-import 'network_image.dart';
-import '../../views/home/bundle_product_details_page.dart';
+import '../../views/home/bundle_details_page.dart';
+import '../utils/currency_formatter.dart';
 
 class BundleTileSquare extends StatelessWidget {
   const BundleTileSquare({super.key, required this.data});
@@ -19,13 +20,7 @@ class BundleTileSquare extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => BundleProductDetailsPage(
-                name: data.name,
-                price: data.price,
-                images: [data.cover], // bundle biasanya cuma 1 gambar
-              ),
-            ),
+            MaterialPageRoute(builder: (_) => BundleDetailsPage(bundle: data)),
           );
         },
         borderRadius: AppDefaults.borderRadius,
@@ -46,50 +41,57 @@ class BundleTileSquare extends StatelessWidget {
                 ),
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
-                  child: NetworkImageWithLoader(
-                    data.cover,
+                  child: CachedNetworkImage(
+                    imageUrl: data.cover,
                     fit: BoxFit.contain,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
               ),
+
               const SizedBox(height: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    data.name,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleLarge?.copyWith(color: Colors.black),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    data.itemNames.join(','),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+
+              Text(
+                data.name,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: Colors.black),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
+
+              Text(
+                data.itemNames.join(', '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+
               const SizedBox(height: 8),
+
               Row(
                 children: [
                   Text(
-                    '\$${data.price.toInt()}',
+                    CurrencyFormatter.toRupiah(data.price),
                     style: Theme.of(
                       context,
                     ).textTheme.titleLarge?.copyWith(color: Colors.black),
                   ),
+
                   const SizedBox(width: 4),
+
                   Text(
-                    '\$${data.mainPrice}',
+                    CurrencyFormatter.toRupiah(data.mainPrice),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       decoration: TextDecoration.lineThrough,
                     ),
                   ),
-                  const Spacer(),
                 ],
               ),
+
               const SizedBox(height: 16),
             ],
           ),

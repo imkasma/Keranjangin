@@ -3,16 +3,19 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
-import '../../../core/constants/global_data.dart'; // 🔥 INI WAJIB
+import '../../../core/utils/currency_formatter.dart';
+import '../../../core/constants/global_data.dart';
 
 class SingleCartItemTile extends StatelessWidget {
   final CartItem item;
   final int index;
+  final VoidCallback onDelete;
 
   const SingleCartItemTile({
     super.key,
     required this.item,
     required this.index,
+    required this.onDelete,
   });
 
   @override
@@ -96,20 +99,13 @@ class SingleCartItemTile extends StatelessWidget {
                 children: [
                   IconButton(
                     constraints: const BoxConstraints(),
-                    onPressed: () {
-                      cart.removeAt(index);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Item dihapus")),
-                      );
-
-                      (context as Element).markNeedsBuild();
-                    },
+                    onPressed: onDelete,
                     icon: SvgPicture.asset(AppIcons.delete),
                   ),
                   const SizedBox(height: 16),
+
                   Text(
-                    '\$${item.price.toStringAsFixed(2)}',
+                    CurrencyFormatter.toRupiah(item.price),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
