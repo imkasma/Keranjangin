@@ -72,7 +72,7 @@ class AppRoutes {
   static const String help = '/help';
   static const String contactUs = '/contactUs';
 
-  /// ✅ PAYMENT (INI YANG PENTING)
+  /// PAYMENT
   static const String paymentMethod = '/paymentMethod';
   static const String addNewCard = '/addNewCard'; // TAMBAHAN
 }

@@ -3,29 +3,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
-// Import Routes
-import 'core/routes/app_routes.dart';
-import 'core/routes/on_generate_route.dart';
-import 'core/themes/app_themes.dart';
+// Routes
+import 'package:keranjangin/core/routes/app_routes.dart';
+import 'package:keranjangin/core/routes/on_generate_route.dart';
+import 'package:keranjangin/core/themes/app_themes.dart';
 
-// ✅ Providers
-import 'core/viewmodels/product_provider.dart';
-import 'core/viewmodels/card_viewmodel.dart';
+// Providers / ViewModels
+import 'package:keranjangin/core/viewmodels/product_provider.dart';
+import 'package:keranjangin/core/viewmodels/card_viewmodel.dart';
+import 'package:keranjangin/core/viewmodels/profile_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ProductProvider()),
-        ChangeNotifierProvider(create: (_) => CardViewModel()), // ✅ TAMBAH INI
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -33,12 +26,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Keranjangin',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.defaultTheme,
-      onGenerateRoute: RouteGenerator.onGenerate,
-      initialRoute: AppRoutes.onboarding,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => CardViewModel()),
+        ChangeNotifierProvider(
+          create: (_) => ProfileViewModel(),
+        ), // ✅ FIX DI SINI
+      ],
+      child: MaterialApp(
+        title: 'Keranjangin',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.defaultTheme,
+        onGenerateRoute: RouteGenerator.onGenerate,
+        initialRoute: AppRoutes.onboarding,
+      ),
     );
   }
 }

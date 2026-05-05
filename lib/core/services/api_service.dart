@@ -37,13 +37,36 @@ class ApiService {
 
       final data = body['data'];
 
-      // 🔥 API kamu OBJECT, bukan LIST
+      // API kamu OBJECT, bukan LIST
       if (data == null || data is! Map<String, dynamic>) {
         print("DATA CARD KOSONG / FORMAT SALAH");
         return null;
       }
 
       return CardModel.fromJson(data);
+    } else {
+      throw Exception("Error ${response.statusCode}");
+    }
+  }
+
+  // ================== PROFILE (BARU) ==================
+  static Future<Map<String, dynamic>?> getProfile() async {
+    final response = await http.get(Uri.parse('$baseUrl/profile'));
+
+    print("PROFILE RESPONSE: ${response.body}");
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+
+      final data = body['data'];
+
+      // biasanya profile bentuknya object
+      if (data == null || data is! Map<String, dynamic>) {
+        print("DATA PROFILE KOSONG / FORMAT SALAH");
+        return null;
+      }
+
+      return data;
     } else {
       throw Exception("Error ${response.statusCode}");
     }
