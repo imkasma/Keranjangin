@@ -7,7 +7,10 @@ import 'firebase_options.dart';
 import 'core/routes/app_routes.dart';
 import 'core/routes/on_generate_route.dart';
 import 'core/themes/app_themes.dart';
+
+// ✅ Providers
 import 'core/viewmodels/product_provider.dart';
+import 'core/viewmodels/card_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +18,10 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
-    // Bungkus dengan MultiProvider
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductProvider()),
-        // ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => CardViewModel()), // ✅ TAMBAH INI
       ],
       child: const MyApp(),
     ),

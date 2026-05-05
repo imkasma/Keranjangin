@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
-class PaymentDefaultCard extends StatelessWidget {
-  const PaymentDefaultCard({
-    super.key,
-  });
+import '../../../../core/models/card_model.dart';
+
+class DefaultCard extends StatelessWidget {
+  final CardModel card;
+
+  const DefaultCard({super.key, required this.card});
 
   @override
   Widget build(BuildContext context) {
     return CreditCardWidget(
-      cardNumber: '146465465456',
-      expiryDate: '10/24',
-      cardHolderName: 'Dannis Alvert',
-      labelCardHolder: 'Dannis',
-      isHolderNameVisible: true,
-      backgroundNetworkImage: 'https://i.imgur.com/uUDkwQx.png',
-      cvvCode: '5424',
+      cardNumber: card.number,
+      expiryDate: card.valid,
+      cardHolderName: card.name,
+
+      // 🔥 WAJIB ADA (walaupun API tidak punya)
+      cvvCode: '***',
+
       showBackView: false,
       cardType: CardType.visa,
       onCreditCardWidgetChange: (v) {},

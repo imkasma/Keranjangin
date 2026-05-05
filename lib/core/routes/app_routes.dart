@@ -25,7 +25,7 @@ class AppRoutes {
 
   /// Cart & Checkout
   static const String cartPage = '/cartPage';
-  static const String savePage = '/favouriteList';
+  static const String savePage = '/favouriteList'; // BIAR GAK ERROR
   static const String checkoutPage = '/checkoutPage';
 
   /// Order
@@ -72,7 +72,7 @@ class AppRoutes {
   static const String help = '/help';
   static const String contactUs = '/contactUs';
 
-  /// Payment
+  /// ✅ PAYMENT (INI YANG PENTING)
   static const String paymentMethod = '/paymentMethod';
-  static const String paymentCardAdd = '/paymentCardAdd';
+  static const String addNewCard = '/addNewCard'; // TAMBAHAN
 }

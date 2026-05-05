@@ -120,7 +120,6 @@ class RouteGenerator {
       // ================= PRODUCT =================
       case AppRoutes.productDetails:
         final product = settings.arguments as ProductModel?;
-
         return CupertinoPageRoute(
           builder: (_) => ProductDetailsPage(
             product:
@@ -137,10 +136,9 @@ class RouteGenerator {
           ),
         );
 
-      // ================= BUNDLE (ONLY THIS LEFT) =================
+      // ================= BUNDLE =================
       case AppRoutes.bundleDetailsPage:
         final bundle = settings.arguments as BundleModel?;
-
         if (bundle == null) {
           return CupertinoPageRoute(
             builder: (_) => const Scaffold(
@@ -148,7 +146,6 @@ class RouteGenerator {
             ),
           );
         }
-
         return CupertinoPageRoute(
           builder: (_) => BundleDetailsPage(bundle: bundle),
         );
@@ -179,6 +176,13 @@ class RouteGenerator {
       case AppRoutes.notifications:
         return CupertinoPageRoute(builder: (_) => const NotificationPage());
 
+      // ================= PAYMENT (FIX) =================
+      case AppRoutes.paymentMethod:
+        return CupertinoPageRoute(builder: (_) => const PaymentMethodPage());
+
+      case AppRoutes.addNewCard:
+        return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
+
       // ================= SETTINGS =================
       case AppRoutes.settings:
         return CupertinoPageRoute(builder: (_) => const SettingsPage());
@@ -199,7 +203,7 @@ class RouteGenerator {
           builder: (_) => const ChangePhoneNumberPage(),
         );
 
-      // ================= DEFAULT =================
+      // ================= DEFAULT (BALIKIN KE HOME) =================
       default:
         return CupertinoPageRoute(builder: (_) => const EntryPointUI());
     }
