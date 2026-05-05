@@ -11,8 +11,16 @@ class CurrencyFormatter {
     return format.format(number);
   }
 
-  // OPTIONAL: biar yang lama gak error juga
+  // ✅ FIX: auto tampil ribuan (000) + format benar
   static String toRupiah(double number) {
     return convertToIdr(number, 0);
+  }
+
+  // 🔥 OPTIONAL: kalau suatu saat API USD → IDR (tanpa ubah API)
+  static const double _rate = 15000;
+
+  static String fromUsd(double usd) {
+    final idr = usd * _rate;
+    return convertToIdr(idr, 0);
   }
 }

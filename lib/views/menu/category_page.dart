@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // ✅ Tambah ini
+import 'package:provider/provider.dart';
+
 import '../../core/components/app_back_button.dart';
 import '../../core/constants/constants.dart';
 import '../../core/models/product_model.dart';
-import '../../core/viewmodels/product_provider.dart'; // ✅ Sesuaikan path Provider kamu
+import '../../core/utils/currency_formatter.dart';
+import '../../core/viewmodels/product_provider.dart';
 
 class CategoryProductPage extends StatefulWidget {
   final String category;
@@ -26,16 +28,15 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    // 💡 Ambil data dari Provider, bukan dari dummyProducts lagi
     final productProvider = Provider.of<ProductProvider>(context);
 
-    // 🔥 FILTER: Sesuai kategori DAN sesuai pencarian
     final List<ProductModel> displayProducts = productProvider.products.where((
       product,
     ) {
       final bool matchesCategory =
           product.category.toLowerCase().trim() ==
           widget.category.toLowerCase().trim();
+
       final bool matchesSearch = product.name.toLowerCase().contains(
         searchQuery.toLowerCase(),
       );
@@ -86,12 +87,10 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
             ),
           ),
 
-          /// 🛒 PRODUCT GRID
+          /// 🛒 GRID
           Expanded(
             child: productProvider.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  ) // Tampilkan loading jika API sedang fetch
+                ? const Center(child: CircularProgressIndicator())
                 : displayProducts.isEmpty
                 ? Center(
                     child: Text(
@@ -124,8 +123,18 @@ class _ProductCard extends StatelessWidget {
   final ProductModel product;
   const _ProductCard({required this.product});
 
+  double _safeDouble(dynamic value) {
+    if (value == null) return 0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    return double.tryParse(value.toString()) ?? 0;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final price = _safeDouble(product.price);
+    final mainPrice = _safeDouble(product.mainPrice);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -137,7 +146,7 @@ class _ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// 🖼 IMAGE (Sudah dukung URL Internet & Assets)
+          /// 🖼 IMAGE
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
@@ -172,16 +181,21 @@ class _ProductCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
+
                 const SizedBox(height: 4),
+
                 Text(
                   product.weight,
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
+
                 const SizedBox(height: 6),
+
+                /// 💰 PRICE (FINAL FIX)
                 Row(
                   children: [
                     Text(
-                      "\$${product.price}",
+                      CurrencyFormatter.toRupiah(price),
                       style: const TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.bold,
@@ -189,7 +203,7 @@ class _ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      "\$${product.mainPrice}",
+                      CurrencyFormatter.toRupiah(mainPrice),
                       style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 12,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
 import '../models/product_model.dart';
+import '../utils/currency_formatter.dart';
 import 'network_image.dart';
 import '../../views/home/product_details_page.dart';
 
@@ -17,11 +17,10 @@ class ProductTileSquare extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(16),
         color: Colors.white,
-        elevation: 2, // 🔥 shadow biar naik
+        elevation: 2,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
 
-          /// 🔥 NAVIGASI KE DETAIL
           onTap: () {
             Navigator.push(
               context,
@@ -33,13 +32,11 @@ class ProductTileSquare extends StatelessWidget {
 
           child: Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// 🔥 GAMBAR
+                /// GAMBAR
                 Expanded(
                   child: Center(
                     child: NetworkImageWithLoader(
@@ -51,7 +48,7 @@ class ProductTileSquare extends StatelessWidget {
 
                 const SizedBox(height: 8),
 
-                /// 🔥 NAMA PRODUK
+                /// NAMA PRODUK
                 Text(
                   data.name,
                   style: const TextStyle(
@@ -64,25 +61,20 @@ class ProductTileSquare extends StatelessWidget {
 
                 const SizedBox(height: 4),
 
-                /// 🔥 BERAT
+                /// BERAT
                 Text(
                   data.weight,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
 
                 const SizedBox(height: 6),
 
-                /// ⭐ RATING
+                /// RATING
                 Row(
                   children: List.generate(
                     5,
                     (index) => Icon(
-                      index < data.rating
-                          ? Icons.star
-                          : Icons.star_border,
+                      index < data.rating ? Icons.star : Icons.star_border,
                       size: 14,
                       color: Colors.orange,
                     ),
@@ -91,11 +83,11 @@ class ProductTileSquare extends StatelessWidget {
 
                 const Spacer(),
 
-                /// 💰 HARGA
+                /// HARGA (RUPIAH)
                 Row(
                   children: [
                     Text(
-                      '\$${data.price.toInt()}',
+                      CurrencyFormatter.toRupiah(data.price),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -104,7 +96,7 @@ class ProductTileSquare extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '\$${data.mainPrice}',
+                      CurrencyFormatter.toRupiah(data.mainPrice),
                       style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
                         color: Colors.grey,
